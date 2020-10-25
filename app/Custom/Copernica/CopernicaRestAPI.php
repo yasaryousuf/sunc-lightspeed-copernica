@@ -57,6 +57,15 @@ class CopernicaRestAPI
         // do the call
         $answer = curl_exec($curl);
 
+        // retrieve the HTTP status code
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        // bad request
+        if (!$httpCode || $httpCode == 400) {
+            throw new \Exception(json_decode($answer, true)['error']['message']);
+        };
+
+
         // do we have a JSON output? we can be nice and parse it for the user
         if (curl_getinfo($curl, CURLINFO_CONTENT_TYPE) == 'application/json') {
 
@@ -86,10 +95,10 @@ class CopernicaRestAPI
      * @return mixed           ID of created entity, or simply true/false
      *                          to indicate success or failure
      */
-    public function post($resource, array $data = array())
+    public function post($resource, array $data = array(), $curlopt_header = false)
     {
         // Pass the request on
-        return $this->sendData($resource, $data, array(), "POST");
+        return $this->sendData($resource, $data, array(), "POST", $curlopt_header);
     }
 
     /**
@@ -119,7 +128,7 @@ class CopernicaRestAPI
      * @return mixed           ID of created entity, or simply true/false
      *                          to indicate success or failure
      */
-    public function sendData($resource, array $data = array(), array $parameters = array(), $method = "POST")
+    public function sendData($resource, array $data = array(), array $parameters = array(), $method = "POST", $curlopt_header = false)
     {
         // the query string
         $query = http_build_query(array('access_token' => $this->token) + $parameters);
@@ -131,42 +140,47 @@ class CopernicaRestAPI
         $data = json_encode($data);
 
         // set the options for a POST method
-        if ($method == "POST") $options = array(
-            CURLOPT_POST => true,
-            CURLOPT_HEADER => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => array('content-type: application/json'),
-            CURLOPT_POSTFIELDS => $data
-        );
+        if ($method == "POST") {
+            $options = array(
+                CURLOPT_POST => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array('content-type: application/json'),
+                CURLOPT_POSTFIELDS => $data
+            );
+
+            if ($curlopt_header) {
+                $options[CURLOPT_HEADER] = true; 
+            }
+        }
         // set the options for a PUT method
-        else $options = array(
-            CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_HEADER => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => array('content-type: application/json', 'content-length: ' . strlen($data)),
-            CURLOPT_POSTFIELDS => $data
-        );
+        else { 
+            $options = array(
+                CURLOPT_CUSTOMREQUEST => 'PUT', 
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array('content-type: application/json', 'content-length: ' . strlen($data)),
+                CURLOPT_POSTFIELDS => $data
+            );
+
+            if ($curlopt_header) {
+                $options[CURLOPT_HEADER] = true; 
+            }
+        }
 
         // additional options
         curl_setopt_array($curl, $options);
 
-        // execute the call
+
         $answer = curl_exec($curl);
 
-        // retrieve the HTTP status code
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-        // clean up curl resource
         curl_close($curl);
 
-        // bad request
-        if (!$httpCode || $httpCode == 400) return false;
+        if (!$httpCode || $httpCode == 400) {
+            throw new \Exception(json_decode($answer, true)['error']['message']);
+        };
 
-        // try and get the X-Created id from the header
-        // if we have none we just return true for a succesful request
         if (!preg_match('/X-Created:\s?(\d+)/i', $answer, $matches)) return true;
-
-        // return the id of the created item
         return $matches[1];
     }
 

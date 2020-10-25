@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LightspeedDiscountController extends Controller
 {
+    public function import()
+    {
+        return back()->withWarning("Not implemented yet for discounts");
+    }
+
     public function show()
     {
         $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();

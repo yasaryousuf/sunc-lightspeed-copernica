@@ -20,13 +20,32 @@ class CopernicaAuthController extends Controller
         request()->validate([
             'api_key' => 'required',
             'api_secret' => 'required',
+            'token' => 'required',
         ]);
 
         $copernicaAuth = CopernicaAuth::firstOrNew(array('user_id' => \Auth::user()->id));
         $copernicaAuth->api_key = $request->api_key;
         $copernicaAuth->api_secret = $request->api_secret;
+        $copernicaAuth->token = $request->token;
         $copernicaAuth->user_id = \Auth::user()->id;
         $copernicaAuth->save();
         return back()->withSuccess( 'Copernica API credentials saved!' );
+    }
+
+    public function updateApi(Request $request)
+    {
+        request()->validate([
+            'api_key' => 'required',
+            'api_secret' => 'required',
+            'token' => 'required',
+        ]);
+
+        $copernicaAuth = CopernicaAuth::firstOrNew(array('user_id' => \Auth::user()->id));
+        $copernicaAuth->api_key = $request->api_key;
+        $copernicaAuth->api_secret = $request->api_secret;
+        $copernicaAuth->token = $request->token;
+        $copernicaAuth->user_id = \Auth::user()->id;
+        $copernicaAuth->save();
+        return response()->json( ['success'=>true] );
     }
 }

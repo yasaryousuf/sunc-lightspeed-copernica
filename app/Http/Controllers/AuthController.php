@@ -8,12 +8,19 @@ Use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Session;
+use App\Models\CopernicaAuth;
+use App\Models\LightspeedAuth;
  
 class AuthController extends Controller
 {
 
     function __construct()
     {
+    }
+    
+    public function success()
+    {
+        return view('success');
     }
 
     public function index()
@@ -35,8 +42,15 @@ class AuthController extends Controller
  
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
+            $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
+
+            if (empty($lightspeedAuth) || empty($lightspeedAuth->api_key) || empty($copernicaAuth) || empty($copernicaAuth->token)) {
+                return redirect('/wizard');
+            }
             return redirect()->intended('dashboard');
         }
+
         return Redirect::to("login")->withSuccess('Opps! You have entered invalid credentials');
     }
 
@@ -50,9 +64,14 @@ class AuthController extends Controller
          
         $data = $request->all();
  
-        $check = $this->create($data);
+        try {
+            $check = $this->create($data);
+        } catch (\Exception $e) {
+            return Redirect::to("registration")->withSuccess('Something went wrong.');
+        }
+        
        
-        return Redirect::to("dashboard")->withSuccess('Great! You have Successfully logged in');
+        return Redirect::to("login")->withSuccess('You have Successfully registered. Now, login using email and password.');
     }
      
     public function dashboard()

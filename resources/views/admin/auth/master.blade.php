@@ -36,14 +36,14 @@
                 </div>
                 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
                     <div class="kt-grid__item kt-grid__item--middle">
-                        <h3 class="kt-login__title">Welcome to Metronic!</h3>
-                        <h4 class="kt-login__subtitle">The ultimate Bootstrap & Angular 6 admin theme framework for next generation web apps.</h4>
+                        <h3 class="kt-login__title">Lightspeed to Copernica</h3>
+                        <h4 class="kt-login__subtitle">The ultimate email marketing web apps.</h4>
                     </div>
                 </div>
                 <div class="kt-grid__item">
                     <div class="kt-login__info">
                         <div class="kt-login__copyright">
-                            &copy 2018 Metronic
+                            &copy 2018 Lightspeed to Copernica
                         </div>
                         <div class="kt-login__menu">
                             <a href="#" class="kt-link">Privacy</a>
@@ -54,6 +54,7 @@
                 </div>
             </div>
             <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper">
+                @include('admin.includes.flashMessage');
                 @yield('content')
             </div>
         </div>

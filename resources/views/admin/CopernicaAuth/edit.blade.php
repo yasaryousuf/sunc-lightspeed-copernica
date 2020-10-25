@@ -1,5 +1,11 @@
 @extends('admin.master')
 
+@section('coper_active', 'kt-menu__item--open')
+
+@section('coper_sub_active', 'kt-menu__item--open')
+
+@section('coper_auth_sub_active', 'kt-menu__item--active')
+
 @section('content')
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
         <!-- begin:: Content Head -->
@@ -62,6 +68,15 @@
                                                                     <input class="form-control" type="text" value="{{$copernicaAuth ? $copernicaAuth->api_secret : ''}}" name="api_secret">
                                                                     @if ($errors->has('api_secret'))
                                                                         <span class="error invalid-feedback d-block">{{ $errors->first('api_secret') }}</span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-xl-3 col-lg-3 col-form-label">Token</label>
+                                                                <div class="col-lg-9 col-xl-9">
+                                                                    <input class="form-control" type="text" value="{{$copernicaAuth ? $copernicaAuth->token : ''}}" name="token">
+                                                                    @if ($errors->has('token'))
+                                                                        <span class="error invalid-feedback d-block">{{ $errors->first('token') }}</span>
                                                                     @endif
                                                                 </div>
                                                             </div>
