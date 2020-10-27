@@ -16,14 +16,16 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('lightspeed_id')->nullable();
-            $table->string('number')->nullable();
+            $table->unsignedBigInteger('orderId')->nullable();
+            $table->unsignedBigInteger('customerId')->nullable();
+            $table->string('orderNumber')->nullable();
             $table->datetime('createdAt')->nullable();
             $table->datetime('updatedAt')->nullable();
             $table->string('status')->nullable();
             $table->double('priceIncl')->nullable();
             $table->string('email')->nullable();
             $table->datetime('deliveryDate')->nullable();
+            $table->datetime('pickupDate')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

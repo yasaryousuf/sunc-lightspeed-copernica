@@ -16,8 +16,7 @@ class CreateOrderPeopleTable extends Migration
         Schema::create('order_people', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('person_id');
+            $table->unsignedBigInteger('customerId');
             $table->string('nationalId')->nullable();
             $table->string('email')->nullable();
             $table->string('gender')->nullable();
@@ -60,10 +59,10 @@ class CreateOrderPeopleTable extends Migration
             $table->string('languageLocale')->nullable();
             $table->string('customerType')->nullable();
             $table->tinyInteger('optInNewsletter')->default(false);
+            $table->string('nieuwsbrief')->default('Nee');
             $table->tinyInteger('isSaved')->nullable();
         
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

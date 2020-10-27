@@ -8,8 +8,8 @@
         </div>
         <div class="kt-aside__brand-tools">
             <button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler">
-                <span><i class="flaticon-email-black-circular-button"></i></span>
-                <span><i class="flaticon-email-black-circular-button"></i></span>
+                <span><i class="flaticon2-fast-back" style="color: #5c5e81;"></i></span>
+                <span><i class="flaticon2-fast-next" style="color: #5c5e81;"></i></span>
             </button>
         </div>
     </div>
@@ -149,11 +149,12 @@
                                                     class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
                                                     class="kt-menu__link-text">API tokens</span></a>
                                         </li>
-                                        <li class="kt-menu__item @yield('coper_auth_sub_active')" aria-haspopup="true">
+                                        {{-- <li
+                                            class="kt-menu__item @yield('coper_auth_sub_active')" aria-haspopup="true">
                                             <a href="{{ url('copernica/setup') }}" class="kt-menu__link "><i
                                                     class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
                                                     class="kt-menu__link-text">Setup</span></a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </li>

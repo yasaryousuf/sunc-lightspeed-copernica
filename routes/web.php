@@ -22,6 +22,8 @@ use App\Http\Controllers\LightspeedController;
     Route::post('copernica-auth-api/settings', [CopernicaAuthController::class, 'updateApi']);
     Route::get('copernica/database/create/user-api', [CopernicaController::class, 'userDatabaseCreateApi']);
     Route::get('copernica/database/fields/create/user-api', [CopernicaController::class, 'userDatabaseFieldsCreateApi']);
+    Route::get('copernica/collection/create/order-api', [CopernicaController::class, 'orderCollectionCreateApi']);
+    Route::get('copernica/collection/create/orderrow-api', [CopernicaController::class, 'orderRowCollectionCreateApi']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [AuthController::class, 'dashboard']);

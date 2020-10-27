@@ -11,8 +11,7 @@ class OrderPerson extends Model
 
     protected $fillable = [
         'user_id',
-        'order_id',
-        'person_id',
+        'customerId',
         'nationalId',
         'email',
         'gender',
@@ -54,5 +53,11 @@ class OrderPerson extends Model
         'lastOnlineAt',
         'languageLocale',
         'customerType',
+        'nieuwsbrief'
     ];
+
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Order', 'customerId', 'customerId');
+    }
 }

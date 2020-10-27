@@ -61,7 +61,21 @@
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>5</span> Final</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>5</span> Order Collection</div>
+                                            <div class="kt-wizard-v3__nav-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+                                        data-ktwizard-state="pending">
+                                        <div class="kt-wizard-v3__nav-body">
+                                            <div class="kt-wizard-v3__nav-label"> <span>6</span> Row Collection</div>
+                                            <div class="kt-wizard-v3__nav-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+                                        data-ktwizard-state="pending">
+                                        <div class="kt-wizard-v3__nav-body">
+                                            <div class="kt-wizard-v3__nav-label"> <span>7</span> Final</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
@@ -168,6 +182,24 @@
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
                                             <div class="form-group row">
+                                                <h1>Click 'Next' to Add order collection to database.</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v3__form">
+                                            <div class="form-group row">
+                                                <h1>Click 'Next' to Add order row collection to database.</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v3__form">
+                                            <div class="form-group row">
                                                 <h1>You are all done!</h1>
                                             </div>
                                         </div>
@@ -205,8 +237,10 @@
             // KTWizard3.init();
             wizard = new KTWizard("kt_wizard_v3", {
                 startStep: 1, // Initial active step number
-                clickableSteps: true, // Allow step clicking
+                clickableSteps: false, // Allow step clicking
             }).on("beforeNext", function(e) {
+                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    .prop("disabled", true).addClass('spinner').addClass('spinner-right');
                 if (e.currentStep == 1) {
                     $.ajax({
                         type: "POST",
@@ -217,7 +251,9 @@
                             api_secret: $('[name="lightspeed[api_secret]"]').val(),
                         },
                         success: function(data) {
-                            // goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
                         },
                         error: function(data) {
                             swal.fire({
@@ -226,6 +262,9 @@
                                 type: "error",
                                 confirmButtonClass: "btn btn-secondary",
                             });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
                             wizard.goTo(1);
                         },
                     });
@@ -240,7 +279,9 @@
                             token: $('[name="copernica[token]"]').val(),
                         },
                         success: function(data) {
-                            // goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
                         },
                         error: function(data) {
                             swal.fire({
@@ -249,6 +290,9 @@
                                 type: "error",
                                 confirmButtonClass: "btn btn-secondary",
                             });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
                             wizard.goTo(2);
                         },
                     });
@@ -261,7 +305,9 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(data) {
-                            //goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
                         },
                         error: function(data) {
                             console.log(data)
@@ -271,6 +317,11 @@
                                 type: "error",
                                 confirmButtonClass: "btn btn-secondary",
                             });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+
+                            // wizard.goTo(3);
                         },
                     });
                 } else if (e.currentStep == 4) {
@@ -282,7 +333,9 @@
                             _token: '{{ csrf_token() }}',
                         },
                         success: function(data) {
-                            //goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
                         },
                         error: function(data) {
                             console.log(data)
@@ -292,6 +345,66 @@
                                 type: "error",
                                 confirmButtonClass: "btn btn-secondary",
                             });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                            // wizard.goTo(4);
+                        },
+                    });
+                } else if (e.currentStep == 5) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ url('copernica/collection/create/order-api') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(data) {
+                            //goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                        },
+                        error: function(data) {
+                            console.log(data)
+                            swal.fire({
+                                title: "",
+                                text: data.responseJSON.message,
+                                type: "error",
+                                confirmButtonClass: "btn btn-secondary",
+                            });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                            // wizard.goTo(5);
+                        },
+                    });
+                } else if (e.currentStep == 6) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ url('copernica/collection/create/orderrow-api') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(data) {
+                            //goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                        },
+                        error: function(data) {
+                            console.log(data)
+                            swal.fire({
+                                title: "",
+                                text: data.responseJSON.message,
+                                type: "error",
+                                confirmButtonClass: "btn btn-secondary",
+                            });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                            // wizard.goTo(6);
                         },
                     });
                 }
@@ -299,4 +412,62 @@
         });
 
     </script>
+@endsection
+
+@section('style')
+    <style>
+        .kt-wizard-v3 .kt-wizard-v3__nav .kt-wizard-v3__nav-items .kt-wizard-v3__nav-item {
+            -ms-flex: 0 0 14%;
+            flex: 0 0 14%;
+        }
+
+        .spinner.spinner-right.btn:not(.btn-block) {
+            padding-right: 3.5rem;
+        }
+
+        .spinner {
+            position: relative;
+        }
+
+        .spinner.spinner-right:before {
+            left: auto;
+            right: 1rem;
+        }
+
+        .spinner:before {
+            -webkit-animation: animation-spinner .5s linear infinite;
+            animation: animation-spinner .5s linear infinite;
+        }
+
+        .spinner:before {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-top: -0.75rem;
+        }
+
+        .spinner:before {
+            content: '';
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            border-radius: 50%;
+            border: 2px solid #D1D3E0;
+            border-right: 2px solid transparent;
+        }
+
+        @-webkit-keyframes animation-spinner {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes animation-spinner {
+            to {
+                -webkit-transform: rotate(360deg);
+                t
+
+    </style>
 @endsection

@@ -11,8 +11,9 @@ class OrderProduct extends Model
 
     protected $fillable = [
         'user_id',
-        'order_id',
-        'product_id',
+        'orderId',
+        'orderRowId',
+        'productId',
         'productTitle',
         'varientId',
         'varientTitle',
@@ -22,4 +23,9 @@ class OrderProduct extends Model
         'priceIncl',
         'email',
     ];
+    
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order', 'orderId', 'orderId');
+    }
 }

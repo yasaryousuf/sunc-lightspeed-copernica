@@ -21,6 +21,7 @@ class Subscriber extends Model
         'firstname',
         'lastname',
         'doNotifyConfirmed',
-        'optInNewsletter'
+        'optInNewsletter',
+        'nieuwsbrief'
     ];
 }

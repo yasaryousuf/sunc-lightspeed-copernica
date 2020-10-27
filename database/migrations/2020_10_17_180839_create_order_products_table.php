@@ -16,8 +16,9 @@ class CreateOrderProductsTable extends Migration
         Schema::create('order_products', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('orderId')->nullable();
+            $table->unsignedBigInteger('orderRowId')->nullable();
+            $table->unsignedBigInteger('productId')->nullable();
             $table->string('productTitle')->nullable();
             $table->string('varientId')->nullable();
             $table->string('varientTitle')->nullable();
@@ -27,7 +28,6 @@ class CreateOrderProductsTable extends Migration
             $table->double('priceIncl')->nullable();
             $table->string('email')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

@@ -13,6 +13,8 @@ class Copernica
     const DISCOUNT_DATABASE_NAME = "ltoc_discount";
     const ORDER_DATABASE_NAME = "ltoc_order";
     const USER_DATABASE_NAME = "ltoc_user";
+    const ORDER_COLLECTION_NAME = "ltoc_order";
+    const ORDER_ROW_COLLECTION_NAME = "ltoc_order_row";
     const ORDER_PERSON_COLLECTION_NAME = "ltoc_order_person";
     const ORDER_PRODUCT_COLLECTION_NAME = "ltoc_order_product";
     const DATABASE_DESCRIPTION = "a description of the database";

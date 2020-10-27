@@ -28,21 +28,6 @@ class LightspeedOrderController extends Controller
             try {
                 $createdAt = $order['createdAt'] ? new \DateTime($order['createdAt']) : null;
                 $updatedAt = $order['updatedAt'] ? new \DateTime($order['updatedAt']) : null;
-                $orderObj = \App\Models\Order::updateOrCreate(
-                    [
-                        'lightspeed_id'     =>  $order['id']],
-                    [
-                        'user_id' => Auth::user()->id,
-                        'lightspeed_id' => $order['id'],
-                        'number' => $order['number'],
-                        'createdAt' => $createdAt ? $createdAt->format('Y-m-d H:i:s') : null,
-                        'updatedAt' => $updatedAt ? $updatedAt->format('Y-m-d H:i:s') : null,
-                        'status' => $order['status'],
-                        'priceIncl' => $order['priceIncl'],
-                        'email' => $order['email'],
-                        'deliveryDate' => $order['deliveryDate'],
-                    ]
-                );
                 $customer = (new Customer)->getById($order['customer']['resource']['id']);
                 $customerCreatedAt = $customer['createdAt'] ? new \DateTime($customer['createdAt']) : null;
                 $customerUpdatedAt = $customer['updatedAt'] ? new \DateTime($customer['updatedAt']) : null;
@@ -50,14 +35,12 @@ class LightspeedOrderController extends Controller
 
                 $orderPerson = \App\Models\OrderPerson::updateOrCreate(
                     [                        
-                        'user_id' => Auth::user()->id,
-                        'order_id' => $orderObj->id,
-                        'person_id' => $customer['id']
+                        
+                        'email' => $order['email'],
                     ],
                     [
                         'user_id' => Auth::user()->id,
-                        'order_id' => $orderObj->id,
-                        'person_id' => $customer['id'],
+                        'customerId' => $customer['id'],
                         'nationalId' => $order['nationalId'],
                         'email' => $order['email'],
                         'gender' => $order['gender'],
@@ -94,7 +77,6 @@ class LightspeedOrderController extends Controller
                         'languageCode' => $order['language']['code'],
                         'languageTitle' => $order['language']['title'],
                         'languageLocale' => $order['language']['locale'],
-
                         'isConfirmedCustomer' => $customer['isConfirmed'],
                         'customerCreatedAt' => $customerCreatedAt ? $customerCreatedAt->format('Y-m-d H:i:s') : null,
                         'customerUpdatedAt' => $customerUpdatedAt ? $customerUpdatedAt->format('Y-m-d H:i:s') : null,
@@ -103,18 +85,34 @@ class LightspeedOrderController extends Controller
                     ]
                 );
 
+                $orderObj = \App\Models\Order::updateOrCreate(
+                    [
+                        'orderId'     =>  $order['id']],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'orderId' => $order['id'],
+                        'customerId' => $customer['id'],
+                        'orderNumber' => $order['number'],
+                        'createdAt' => $createdAt ? $createdAt->format('Y-m-d H:i:s') : null,
+                        'updatedAt' => $updatedAt ? $updatedAt->format('Y-m-d H:i:s') : null,
+                        'status' => $order['status'],
+                        'priceIncl' => $order['priceIncl'],
+                        'email' => $order['email'],
+                        'deliveryDate' => $order['deliveryDate'],
+                    ]
+                );
+
                 $products = (new Order)->orderProducts($order['id']);
                 foreach ($products as $product) {
                     $variant = (new Order)->variant($product['variant']['resource']['id']);
                     $orderProduct = \App\Models\OrderProduct::updateOrCreate(
                     [                        
-                        'user_id' => Auth::user()->id,
-                        'order_id' => $orderObj->id,
-                        'product_id' => $product['id']],
+                        'orderRowID' => $product['id']],
                     [
                         'user_id'  => Auth::user()->id,
-                        'order_id' => $orderObj->id,
-                        'product_id' => $product['id'],
+                        'orderRowID' => $product['id'],
+                        'orderId' => $order['id'],
+                        'productId' => $product['id'],
                         'productTitle' => $product['productTitle'],
                         'varientId' => $product['variant']['resource']['id'],
                         'varientTitle' => $variant['title'],

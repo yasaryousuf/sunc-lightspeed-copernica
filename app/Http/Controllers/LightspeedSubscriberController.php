@@ -22,8 +22,8 @@ class LightspeedSubscriberController extends Controller
 
         $newSubscribers = array_map(function($x) { 
             $x['isConfirmedCustomer'] = $x['isConfirmed'];
-            $x['languageCode'] = $x['language']['code'];
-            $x['languageTitle'] = $x['language']['title'];
+            $x['languageCode'] = $x['language']['code'] ?? null;
+            $x['languageTitle'] = $x['language']['title'] ?? null;
             unset($x['isConfirmed']); 
             unset($x['language']); 
             unset($x['doNotifyConfirmed']); 

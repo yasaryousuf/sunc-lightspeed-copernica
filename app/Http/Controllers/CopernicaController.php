@@ -27,6 +27,10 @@ class CopernicaController extends Controller
 
     public function sync()
     {
+        $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->firstOrfail();
+        if (empty($copernicaAuth->token)) {
+            return redirect('/')->withWarning("Copernica token not found");
+        }
         return view('admin.copernica.sync');
     }
 
@@ -68,6 +72,167 @@ class CopernicaController extends Controller
         }
         return redirect('/copernica/setup')->withSuccess("Order database created");
     }
+    function orderCollectionCreateApi() {
+        try {
+            $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
+            if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
+                return response()->json(['success'=> false, "message" => "Copernica token not found"], 401);
+            }
+
+            $databases = (new Copernica)->getAllDatabases();
+            $databaseID = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+            $database = new Database;
+            $database->createCollection($databaseID, Copernica::ORDER_COLLECTION_NAME);
+            // $this->collectionCreate(Copernica::ORDER_COLLECTION_NAME);
+            $orderDatas = 
+            [
+                [
+                    'name' => 'customerId',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'orderId',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'orderNumber',
+                    'type' => 'string',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'createdAt',
+                    'type' => 'datetime',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'updatedAt',
+                    'type' => 'datetime',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'status',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'priceIncl',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'email',
+                    'type' => 'email',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'deliveryDate',
+                    'type' => 'datetime',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'pickupDate',
+                    'type' => 'datetime',
+                    'displayed' => true
+                ],
+            ];
+
+            $collections = (new Copernica)->getAllCollections($databaseID);
+
+            $collectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
+
+            foreach ($orderDatas as $data) {
+                $status = $database->createCollectionField($data, $collectionID);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success'=> false, "message" => $e->getMessage()], 401);
+        }
+        return response()->json(['success'=> true, "message" => "Order collection created"], 200);
+    }
+    
+    function orderRowCollectionCreateApi() {
+        try {
+            $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
+            if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
+                return response()->json(['success'=> false, "message" => "Copernica token not found"], 401);
+            }
+
+            $databases = (new Copernica)->getAllDatabases();
+            $databaseID = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+            $database = new Database;
+            $database->createCollection($databaseID, Copernica::ORDER_ROW_COLLECTION_NAME);
+            // $this->collectionCreate(Copernica::ORDER_COLLECTION_NAME);
+            $orderProductDatas = [
+                [
+                    'name' => 'orderRowId',
+                    'type' => 'integer'
+                ],
+                [
+                    'name' => 'orderId',
+                    'type' => 'integer'
+                ],
+                [
+                    'name' => 'productId',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'productTitle',
+                    'type' => 'string',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'varientId',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'varientTitle',
+                    'type' => 'string',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'quantityOrdered',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'quantityReturned',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'basePriceIncl',
+                    'type' => 'float',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'priceIncl',
+                    'type' => 'float',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'email',
+                    'type' => 'email',
+                    'displayed' => true
+                ],
+
+            ];
+
+
+            $collections = (new Copernica)->getAllCollections($databaseID);
+
+            $collectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
+
+            foreach ($orderProductDatas as $data) {
+                $status = $database->createCollectionField($data, $collectionID);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success'=> false, "message" => $e->getMessage()], 401);
+        }
+        return response()->json(['success'=> true, "message" => "Order row collection created"], 200);
+    }
     function personCollectionCreate() {
         try {
             $this->collectionCreate(Copernica::ORDER_PERSON_COLLECTION_NAME);
@@ -98,12 +263,12 @@ class CopernicaController extends Controller
     function collectionCreate ($collection_name) {
       $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
-            return redirect('/copernica/setup')->withWarning("Copernica token not found");
+            throw new Exception("Copernica token not found");
         }
         $databases = (new Copernica)->getAllDatabases();
         $databaseID = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
         $database = new Database;
-        $status = $database->createCollection($databaseID, $collection_name);
+        return $status = $database->createCollection($databaseID, $collection_name);
     }
 
     function orderDatabaseFieldsCreate () {
@@ -334,6 +499,11 @@ class CopernicaController extends Controller
             [
                 'name' => 'optInNewsletter',
                 'type' => 'integer',
+                'displayed' => true
+            ],
+            [
+                'name' => 'nieuwsbrief',
+                'type' => 'text',
                 'displayed' => true
             ],
             [
@@ -1038,14 +1208,21 @@ class CopernicaController extends Controller
         }
         $profile = new Profile();
 
-        $subscribers = \App\Models\Subscriber::all('firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter')->toArray();
-
-        foreach ($subscribers as $subscriber) {
-            try {
-                $status = $profile->create($subscriber, Copernica::USER_DATABASE_NAME);
-            } catch (\Exception $e) {
-                return redirect('/copernica/sync')->withWarning($e->getMessage());
+        $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->whereNull('isSaved')->select('id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
+        if($subscribers->first()) {
+            foreach ($subscribers as $subscriber) {
+                try {
+                    $profileData = $subscriber->toArray();
+                    unset($profileData['id']);
+                    $status = $profile->create($profileData, Copernica::USER_DATABASE_NAME);
+                } catch (\Exception $e) {
+                    return redirect('/copernica/sync')->withWarning($e->getMessage());
+                }
+                $subscriber->isSaved = true;
+                $subscriber->save();
             }
+        } else {
+            return redirect('/copernica/sync')->withSuccess("All updated");
         }
 
 
@@ -1065,9 +1242,9 @@ class CopernicaController extends Controller
 
         // }
         $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
-        // $collections = (new Copernica)->getAllCollections($id);
-        // $personCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_PERSON_COLLECTION_NAME);
-        // $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_PRODUCT_COLLECTION_NAME);
+        $collections = (new Copernica)->getAllCollections($id);
+        $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
+        $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
 
         $profile = new Profile();
 
@@ -1080,13 +1257,34 @@ class CopernicaController extends Controller
                 // $subscriber_id = $subscriber['id'];
                 // unset($subscriber['id']);
                 // $profileID = $profile->create($subscriber, $id, true);
-                $subscribers = \App\Models\OrderPerson::all('nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter')->toArray();
-                foreach ($subscribers as $subscriber) {
-                    try {
-                        $status = $profile->create($subscriber, Copernica::USER_DATABASE_NAME);
-                    } catch (\Exception $e) {
-                        return redirect('/copernica/sync')->withWarning($e->getMessage());
+                $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->whereNull('isSaved')->select('id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+                if ($subscribers->first()) {
+
+                    foreach ($subscribers as $subscriber) {
+                        try {
+                            $subscriberData = $subscriber->toArray();
+                            $customerId = $subscriberData['customerId'];
+                            unset($subscriberData['id']);
+                            unset($subscriberData['customerId']);
+                            $profileID = $profile->create($subscriberData, $id, true);
+                            $subscriber->isSaved = true;
+                            $subscriber->save();
+                            $orders = \App\Models\Order::where('customerId', $customerId)->select('orderId', 'orderNumber', 'createdAt', 'updatedAt', 'status', 'priceIncl', 'email', 'deliveryDate')->get();
+                            foreach($orders as $order ) {
+                                $orderRes = $profile->createSubprofile($profileID, $orderCollectionID, $order->toArray(), true);
+                                $products = \App\Models\OrderProduct::where('orderId', $order->orderId)->select('productId', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email')->get();
+                                foreach($products as $product ) {
+                                    $productRes = $profile->createSubprofile($profileID, $productCollectionID, $product->toArray(), true);
+                                    
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            return redirect('/copernica/sync')->withWarning($e->getMessage());
+                        }
                     }
+                } else {
+                    return redirect('/copernica/sync')->withSuccess("All updated");
+
                 }
                 // $personRes = $profile->createSubprofile($profileID, $personCollectionID, $person, true);
                 // $products = \App\Models\OrderProduct::where('order_id', $subscriber_id)->select('product_id', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email')->get()->toArray();

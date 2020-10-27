@@ -99,6 +99,17 @@ class Database extends Copernica
         return $this->copernicaApi->post("database/". $id ."/fields", $data);
     }
 
+    function createAllFields($fields, $database_name) {
+        $databases = $this->getAll();
+
+        $data = array(
+            'fields' => $fields
+        );
+
+        $id = $this->getDatabaseId($databases['data'], $database_name);
+        return $this->copernicaApi->put("database/". $id, $data);
+    }
+
     function createCollectionField($data, $collectionID) {
         return $this->copernicaApi->post("collection/{$collectionID}/fields", $data);
     }

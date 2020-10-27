@@ -42,6 +42,8 @@
         }
 
     </style>
+
+    @yield('style')
 </head>
 
 <body
@@ -154,9 +156,10 @@
         type="text/javascript"></script>
     <script src="{{ asset('metronic/theme/default/demo1/dist/assets/plugins/custom/gmaps/gmaps.js') }}"
         type="text/javascript"></script>
-    <script src="{{ asset('metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-3.js') }}"
+    {{-- <script
+        src="{{ asset('metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-3.js') }}"
         type="text/javascript">
-    </script>
+    </script> --}}
     @yield('script')
 </body>
 
