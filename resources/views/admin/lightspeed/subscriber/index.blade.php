@@ -48,10 +48,11 @@
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
-                            <a href="{{ url('lightspeed/subscribers/import') }}" class="btn btn-brand btn-icon-sm">
+                            {{-- <a href="{{ url('lightspeed/subscribers/import') }}"
+                                class="btn btn-brand btn-icon-sm">
                                 <i class="flaticon-upload"></i>
                                 Import
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 </div>
@@ -67,7 +68,6 @@
                                 <th>Email</th>
                                 <th>First name</th>
                                 <th>Last name</th>
-                                <th>Notify confirm?</th>
                             </tr>
                         </thead>
 
@@ -75,14 +75,24 @@
                             @if (!empty($subscribers))
                                 @foreach ($subscribers as $subscriber)
                                     <tr>
-                                        <td>{{ $subscriber['id'] }}</td>
-                                        <td>{{ $subscriber['createdAt'] }}</td>
-                                        <td>{{ $subscriber['updatedAt'] }}</td>
-                                        <td>{{ $subscriber['isConfirmed'] ? 'Yes' : 'No' }}</td>
-                                        <td>{{ $subscriber['email'] }}</td>
-                                        <td>{{ $subscriber['firstname'] }}</td>
-                                        <td>{{ $subscriber['lastname'] }}</td>
-                                        <td>{{ $subscriber['doNotifyConfirmed'] ? 'Yes' : 'No' }}</td>
+                                        <td>{{ $subscriber->lightspeed_id }}</td>
+                                        <td>{{ $subscriber->createdAt }}</td>
+                                        <td>{{ $subscriber->updatedAt }}</td>
+                                        <td>{{ $subscriber->isConfirmedCustomer ? 'Yes' : 'No' }}</td>
+                                        <td>{{ $subscriber->email }}</td>
+                                        <td>{{ $subscriber->firstname }}</td>
+                                        <td>{{ $subscriber->lastname }}</td>
+                                    </tr>
+                                @endforeach
+                                @foreach ($customers as $customer)
+                                    <tr>
+                                        <td>{{ $customer->customerId }}</td>
+                                        <td>{{ $customer->customerCreatedAt }}</td>
+                                        <td>{{ $customer->customerUpdatedAt }}</td>
+                                        <td>{{ $customer->isConfirmedCustomer ? 'Yes' : 'No' }}</td>
+                                        <td>{{ $customer->email }}</td>
+                                        <td>{{ $customer->firstname }}</td>
+                                        <td>{{ $customer->lastname }}</td>
                                     </tr>
                                 @endforeach
                             @else

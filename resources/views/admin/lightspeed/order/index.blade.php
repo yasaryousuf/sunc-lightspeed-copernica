@@ -48,10 +48,11 @@
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
-                            <a href="{{ url('lightspeed/orders/import') }}" class="btn btn-brand btn-icon-sm">
+                            {{-- <a href="{{ url('lightspeed/orders/import') }}"
+                                class="btn btn-brand btn-icon-sm">
                                 <i class="flaticon-upload"></i>
                                 Import
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 </div>

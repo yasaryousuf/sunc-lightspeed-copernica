@@ -28,6 +28,7 @@ class CreateSubscribersTable extends Migration
             $table->string('optInNewsletter')->default(true);
             $table->string('nieuwsbrief')->default('Ja');
             $table->tinyInteger('isSaved')->nullable();
+            $table->unsignedBigInteger('profile_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('wizard', [UserController::class, 'postWizard']);
 
     Route::get('lightspeed/subscribers', [LightspeedSubscriberController::class, 'show']);
+    Route::get('lightspeed/import', [LightspeedSubscriberController::class, 'importapi']);
     Route::get('lightspeed/subscribers/import', [LightspeedSubscriberController::class, 'import']);
 
     Route::get('lightspeed-auth/settings', [LightspeedAuthController::class, 'edit']);

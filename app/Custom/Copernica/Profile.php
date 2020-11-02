@@ -22,6 +22,11 @@ class Profile extends Copernica
         return $this->copernicaApi->post("database/".$id."/profiles", $data, $curlopt_header);
     }
 
+    function update($fields = [], $id, $param) {
+        $data = [ 'fields' => $fields];
+        return $this->copernicaApi->put("database/".$id."/profiles", $data, $param);
+    }
+
     function createSubprofile($profileID, $collectionID, $data, $curlopt_header = false) {
         return $this->copernicaApi->post("profile/{$profileID}/subprofiles/{$collectionID}", $data, $curlopt_header);
     }

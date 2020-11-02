@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('email')->nullable();
             $table->datetime('deliveryDate')->nullable();
             $table->datetime('pickupDate')->nullable();
+            $table->tinyInteger('isSaved')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

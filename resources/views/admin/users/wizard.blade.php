@@ -75,7 +75,21 @@
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>7</span> Final</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>7</span> Collect data</div>
+                                            <div class="kt-wizard-v3__nav-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+                                        data-ktwizard-state="pending">
+                                        <div class="kt-wizard-v3__nav-body">
+                                            <div class="kt-wizard-v3__nav-label"> <span>8</span> Sync data</div>
+                                            <div class="kt-wizard-v3__nav-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+                                        data-ktwizard-state="pending">
+                                        <div class="kt-wizard-v3__nav-body">
+                                            <div class="kt-wizard-v3__nav-label"> <span>9</span> Final</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
@@ -192,6 +206,24 @@
                                         <div class="kt-wizard-v3__form">
                                             <div class="form-group row">
                                                 <h1>Click 'Next' to Add order row collection to database.</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v3__form">
+                                            <div class="form-group row">
+                                                <h1>Click 'Next' to Add collection to our database.</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v3__form">
+                                            <div class="form-group row">
+                                                <h1>Click 'Next' to sync collection to copernica.</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -407,6 +439,62 @@
                             // wizard.goTo(6);
                         },
                     });
+                } else if (e.currentStep == 7) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ url('lightspeed/import') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(data) {
+                            //goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                        },
+                        error: function(data) {
+                            console.log(data)
+                            swal.fire({
+                                title: "",
+                                text: data.responseJSON.message,
+                                type: "error",
+                                confirmButtonClass: "btn btn-secondary",
+                            });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                            // wizard.goTo(6);
+                        },
+                    });
+                } else if (e.currentStep == 8) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ url('copernica/profile/create') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(data) {
+                            //goNext();
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                        },
+                        error: function(data) {
+                            console.log(data)
+                            swal.fire({
+                                title: "",
+                                text: data.responseJSON.message,
+                                type: "error",
+                                confirmButtonClass: "btn btn-secondary",
+                            });
+                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                .prop("disabled", false)
+                                .removeClass('spinner').removeClass('spinner-right');
+                            // wizard.goTo(6);
+                        },
+                    });
                 }
             });
         });
@@ -417,8 +505,8 @@
 @section('style')
     <style>
         .kt-wizard-v3 .kt-wizard-v3__nav .kt-wizard-v3__nav-items .kt-wizard-v3__nav-item {
-            -ms-flex: 0 0 14%;
-            flex: 0 0 14%;
+            -ms-flex: 0 0 11.5%;
+            flex: 0 0 11.5%;
         }
 
         .spinner.spinner-right.btn:not(.btn-block) {

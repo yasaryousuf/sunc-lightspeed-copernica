@@ -27,6 +27,7 @@ class CreateOrderProductsTable extends Migration
             $table->double('basePriceIncl')->nullable();
             $table->double('priceIncl')->nullable();
             $table->string('email')->nullable();
+            $table->tinyInteger('isSaved')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

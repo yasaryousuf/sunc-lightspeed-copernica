@@ -61,6 +61,7 @@ class CreateOrderPeopleTable extends Migration
             $table->tinyInteger('optInNewsletter')->default(false);
             $table->string('nieuwsbrief')->default('Nee');
             $table->tinyInteger('isSaved')->nullable();
+            $table->unsignedBigInteger('profile_id')->nullable();
         
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

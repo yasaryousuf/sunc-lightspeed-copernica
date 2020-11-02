@@ -46,9 +46,10 @@
                                 <h2 class="kt-pricing-1__subtitle">Sync to copernica</h2>
 
                                 <div class="kt-pricing-1__btn">
-                                    <a href="{{ url('/copernica/profile/create/subscriber') }}"
+                                    {{-- <a
+                                        href="{{ url('/copernica/profile/create/subscriber') }}"
                                         class="btn btn-brand btn-wide btn-bold btn-upper">Click
-                                        Here</a>
+                                        Here</a> --}}
                                 </div>
                             </div>
                             {{-- <div class="kt-pricing-1__item col-lg-4">
@@ -75,9 +76,10 @@
                                 <span class="kt-pricing-1__price">Orders</span>
                                 <h2 class="kt-pricing-1__subtitle">Sync to copernica</h2>
                                 <div class="kt-pricing-1__btn">
-                                    <a href="{{ url('/copernica/profile/create/order') }}"
+                                    {{-- <a
+                                        href="{{ url('/copernica/profile/create/order') }}"
                                         class="btn btn-brand btn-wide btn-bold btn-upper">Click
-                                        Here</a>
+                                        Here</a> --}}
                                 </div>
                             </div>
                         </div>
