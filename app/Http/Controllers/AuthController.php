@@ -37,6 +37,7 @@ class AuthController extends Controller
      
     public function postLogin(Request $request)
     {
+        set_time_limit(100);
         request()->validate([
             'email' => 'required',
             'password' => 'required',
@@ -54,7 +55,7 @@ class AuthController extends Controller
                     $subscribers = (new \App\Custom\Lightspeed\Subscriber)->get();
                     $orders = (new \App\Custom\Lightspeed\Order)->get();
                 } catch (\Exception $e) {
-                    return redirect('/wizard')->withWarning($e->getMessage());
+                    // return redirect('/wizard')->withWarning($e->getMessage());
                 }
 
                 $newSubscribers = array_map(function($x) { 
@@ -81,7 +82,7 @@ class AuthController extends Controller
                             $subscriber
                         );
                     } catch (\Exception $e) {
-                        return redirect('/wizard')->withWarning($e->getMessage());
+                        // return redirect('/wizard')->withWarning($e->getMessage());
                     }
                 }
 
@@ -99,48 +100,47 @@ class AuthController extends Controller
 
                         $orderPerson = \App\Models\OrderPerson::updateOrCreate(
                             [                        
-                                
                                 'email' => $order['email'],
                             ],
                             [
                                 'user_id' => Auth::user()->id,
                                 'customerId' => $customer['id'],
-                                'nationalId' => $order['nationalId'],
-                                'email' => $order['email'],
-                                'gender' => $order['gender'],
-                                'firstName' => $order['firstname'],
-                                'lastName' => $order['lastname'],
-                                'phone' => $order['phone'],
-                                'mobile' => $order['mobile'],
-                                'remoteIp' => $order['remoteIp'],
+                                'nationalId' => $customer['nationalId'],
+                                'email' => $customer['email'],
+                                'gender' => $customer['gender'],
+                                'firstName' => $customer['firstname'],
+                                'lastName' => $customer['lastname'],
+                                'phone' => $customer['phone'],
+                                'mobile' => $customer['mobile'],
+                                'remoteIp' => $customer['remoteIp'],
                                 'birthDate' => $birthDate ? $birthDate->format('Y-m-d H:i:s') : null,
-                                'isCompany' => $order['isCompany'],
-                                'companyName' => $order['companyName'],
-                                'companyCoCNumber' => $order['companyCoCNumber'],
-                                'companyVatNumber' => $order['companyVatNumber'],
-                                'addressBillingName' => $order['addressBillingName'],
-                                'addressBillingStreet' => $order['addressBillingStreet'],
-                                'addressBillingStreet2' => $order['addressBillingStreet2'],
-                                'addressBillingNumber' => $order['addressBillingNumber'],
-                                'addressBillingExtension' => $order['addressBillingExtension'],
-                                'addressBillingZipcode' => $order['addressBillingZipcode'],
-                                'addressBillingCity' => $order['addressBillingCity'],
-                                'addressBillingRegion' => $order['addressBillingRegion'],
-                                'addressBillingCountryCode' => $order['addressBillingCountry']['code'],
-                                'addressBillingCountryTitle' => $order['addressBillingCountry']['title'],
-                                'addressShippingName' => $order['addressShippingName'],
-                                'addressShippingStreet' => $order['addressShippingStreet'],
-                                'addressShippingStreet2' => $order['addressShippingStreet2'],
-                                'addressShippingNumber' => $order['addressShippingNumber'],
-                                'addressShippingExtension' => $order['addressShippingExtension'],
-                                'addressShippingZipcode' => $order['addressShippingZipcode'],
-                                'addressShippingCity' => $order['addressShippingCity'],
-                                'addressShippingRegion' => $order['addressShippingRegion'],
-                                'addressShippingCountryCode' => $order['addressShippingCountry']['code'],
-                                'addressShippingCountryTitle' => $order['addressShippingCountry']['title'],
-                                'languageCode' => $order['language']['code'],
-                                'languageTitle' => $order['language']['title'],
-                                'languageLocale' => $order['language']['locale'],
+                                'isCompany' => $customer['isCompany'],
+                                'companyName' => $customer['companyName'],
+                                'companyCoCNumber' => $customer['companyCoCNumber'],
+                                'companyVatNumber' => $customer['companyVatNumber'],
+                                'addressBillingName' => $customer['addressBillingName'],
+                                'addressBillingStreet' => $customer['addressBillingStreet'],
+                                'addressBillingStreet2' => $customer['addressBillingStreet2'],
+                                'addressBillingNumber' => $customer['addressBillingNumber'],
+                                'addressBillingExtension' => $customer['addressBillingExtension'],
+                                'addressBillingZipcode' => $customer['addressBillingZipcode'],
+                                'addressBillingCity' => $customer['addressBillingCity'],
+                                'addressBillingRegion' => $customer['addressBillingRegion'],
+                                'addressBillingCountryCode' => $customer['addressBillingCountry']['code'],
+                                'addressBillingCountryTitle' => $customer['addressBillingCountry']['title'],
+                                'addressShippingName' => $customer['addressShippingName'],
+                                'addressShippingStreet' => $customer['addressShippingStreet'],
+                                'addressShippingStreet2' => $customer['addressShippingStreet2'],
+                                'addressShippingNumber' => $customer['addressShippingNumber'],
+                                'addressShippingExtension' => $customer['addressShippingExtension'],
+                                'addressShippingZipcode' => $customer['addressShippingZipcode'],
+                                'addressShippingCity' => $customer['addressShippingCity'],
+                                'addressShippingRegion' => $customer['addressShippingRegion'],
+                                'addressShippingCountryCode' => $customer['addressShippingCountry']['code'],
+                                'addressShippingCountryTitle' => $customer['addressShippingCountry']['title'],
+                                'languageCode' => $customer['language']['code'],
+                                'languageTitle' => $customer['language']['title'],
+                                'languageLocale' => $customer['language']['locale'],
                                 'isConfirmedCustomer' => $customer['isConfirmed'],
                                 'customerCreatedAt' => $customerCreatedAt ? $customerCreatedAt->format('Y-m-d H:i:s') : null,
                                 'customerUpdatedAt' => $customerUpdatedAt ? $customerUpdatedAt->format('Y-m-d H:i:s') : null,
@@ -171,7 +171,9 @@ class AuthController extends Controller
                             $variant = (new \App\Custom\Lightspeed\Order)->variant($product['variant']['resource']['id']);
                             $orderProduct = \App\Models\OrderProduct::updateOrCreate(
                             [                        
-                                'orderRowID' => $product['id']],
+                                'orderId' => $order['id'],
+                                'productId' => $product['id'],
+                            ],
                             [
                                 'user_id'  => \Auth::user()->id,
                                 'orderRowID' => $product['id'],
@@ -188,94 +190,100 @@ class AuthController extends Controller
                             ]);
                         }
                     } catch (\Exception $e) {
-                        return redirect('/wizard')->withWarning($e->getMessage());
+                        // return redirect('/wizard')->withWarning($e->getMessage());
                     }
                 }
 
                 $profile = new Profile();
 
-                $orderPersonEmails = \App\Models\OrderPerson::pluck('email')->all();
-        $subscribers = \App\Models\Subscriber::whereNotIn('email', $orderPersonEmails)->where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
-        if($subscribers->first()) {
-            foreach ($subscribers as $subscriber) {
-                try {
-                    $profileData = $subscriber->toArray();
-                    unset($profileData['id']);
-                    unset($profileData['profile_id']);
-                    if (!empty($subscriber->profile_id)) {
-                        $parameters = array(
-                            'fields'    =>  array("email=={$subscriber->email}"),
-                            'async'     =>  1,
-                            'create'    =>  0
-                        );
-                        $profile->update($profileData, Copernica::USER_DATABASE_NAME, $parameters);
-                        $profileID = $subscriber->profile_id;
-                    } else {
-                        $profileID = $profile->create($profileData, Copernica::USER_DATABASE_NAME, true);
-                        $subscriber->isSaved = true;
-                        $subscriber->profile_id = $profileID;
-                        $subscriber->save();
-                    }
-                } catch (\Exception $e) {
-                    return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
-                }
-            }
-        }
-
-        $databases = (new Copernica)->getAllDatabases();
-
-        $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
-        $collections = (new Copernica)->getAllCollections($id);
-        $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
-        $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
-
-        $profile = new Profile();
-
-        $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
-        if ($subscribers->first()) {
-
-            foreach ($subscribers as $subscriber) {
-                try {
-                    $subscriberData = $subscriber->toArray();
-                    $customerId = $subscriberData['customerId'];
-                    unset($subscriberData['id']);
-                    unset($subscriberData['customerId']);
-                    unset($subscriberData['profile_id']);
-                    if (!empty($subscriber->profile_id)) {
-                        $parameters = array(
-                            'fields'    =>  array("email=={$subscriber->email}"),
-                            'async'     =>  1,
-                            'create'    =>  0
-                        );
-                        $profile->update($subscriberData, Copernica::USER_DATABASE_NAME, $parameters);
-                        $profileID = $subscriber->profile_id;
-                    } else {
-                        $profileID = $profile->create($subscriberData, $id, true);
-                        $subscriber->isSaved = true;
-                        $subscriber->profile_id = $profileID;
-                        $subscriber->save();
-                    }
-                    $orders = \App\Models\Order::where('customerId', $customerId)->whereNull('isSaved')->select('id', 'orderId', 'orderNumber', 'createdAt', 'updatedAt', 'status', 'priceIncl', 'email', 'deliveryDate')->get();
-                    foreach($orders as $order ) {
-                        $orderData = $order->toArray();
-                        unset($orderData['id']);
-                        $orderRes = $profile->createSubprofile($profileID, $orderCollectionID, $orderData, true);
-                        $order->isSaved = true;
-                        $order->save();
-                        $products = \App\Models\OrderProduct::where('orderId', $order->orderId)->whereNull('isSaved')->select('id', 'productId', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email')->get();
-                        foreach($products as $product ) {
-                            $productData = $product->toArray();
-                            unset($productData['id']);
-                            $productRes = $profile->createSubprofile($profileID, $productCollectionID, $productData, true);
-                            $order->isSaved = true;
-                            $order->save(); 
+                $orderPersonEmails = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->pluck('email');
+                $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
+                if($subscribers->first()) {
+                    foreach ($subscribers as $subscriber) {
+                        try {
+                            $profileData = $subscriber->toArray();
+                            unset($profileData['id']);
+                            unset($profileData['profile_id']);
+                            if (in_array($subscriber->email, $orderPersonEmails->toArray())) {
+                                if(!empty($subscriber->profile_id)) {
+                                    $delRes = $profile->delete($subscriber->profile_id);
+                                }
+                                $subscriber->delete();
+                            }
+                            elseif (!empty($subscriber->profile_id)) {
+                                $parameters = array(
+                                    'fields'    =>  array("email=={$subscriber->email}"),
+                                    'async'     =>  1,
+                                    'create'    =>  0
+                                );
+                                $profile->update($profileData, Copernica::USER_DATABASE_NAME, $parameters);
+                                $profileID = $subscriber->profile_id;
+                            } else {
+                                $profileID = $profile->create($profileData, Copernica::USER_DATABASE_NAME, true);
+                                $subscriber->isSaved = true;
+                                $subscriber->profile_id = $profileID;
+                                $subscriber->save();
+                            }
+                        } catch (\Exception $e) {
+                            //  return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
                         }
                     }
-                } catch (\Exception $e) {
-                    return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
                 }
-            }
-        }
+
+                $databases = (new Copernica)->getAllDatabases();
+
+                $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+                $collections = (new Copernica)->getAllCollections($id);
+                $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
+                $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
+
+                $profile = new Profile();
+
+                $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+                if ($subscribers->first()) {
+
+                    foreach ($subscribers as $subscriber) {
+                        try {
+                            $subscriberData = $subscriber->toArray();
+                            $customerId = $subscriberData['customerId'];
+                            unset($subscriberData['id']);
+                            unset($subscriberData['customerId']);
+                            unset($subscriberData['profile_id']);
+                            if (!empty($subscriber->profile_id)) {
+                                $parameters = array(
+                                    'fields'    =>  array("email=={$subscriber->email}"),
+                                    'async'     =>  1,
+                                    'create'    =>  0
+                                );
+                                $profile->update($subscriberData, Copernica::USER_DATABASE_NAME, $parameters);
+                                $profileID = $subscriber->profile_id;
+                            } else {
+                                $profileID = $profile->create($subscriberData, $id, true);
+                                $subscriber->isSaved = true;
+                                $subscriber->profile_id = $profileID;
+                                $subscriber->save();
+                            }
+                            $orders = \App\Models\Order::where('customerId', $customerId)->whereNull('isSaved')->select('id', 'orderId', 'orderNumber', 'createdAt', 'updatedAt', 'status', 'priceIncl', 'email', 'deliveryDate')->get();
+                            foreach($orders as $order ) {
+                                $orderData = $order->toArray();
+                                unset($orderData['id']);
+                                $orderRes = $profile->createSubprofile($profileID, $orderCollectionID, $orderData, true);
+                                $order->isSaved = true;
+                                $order->save();
+                                $products = \App\Models\OrderProduct::where('orderId', $order->orderId)->whereNull('isSaved')->select('id', 'productId', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email')->get();
+                                foreach($products as $product ) {
+                                    $productData = $product->toArray();
+                                    unset($productData['id']);
+                                    $productRes = $profile->createSubprofile($profileID, $productCollectionID, $productData, true);
+                                    $order->isSaved = true;
+                                    $order->save(); 
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            // return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
+                        }
+                    }
+                }
 
             }
             return redirect()->intended('dashboard');

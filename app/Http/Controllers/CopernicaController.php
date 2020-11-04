@@ -323,6 +323,7 @@ class CopernicaController extends Controller
     }
 
     function userDatabaseFieldsCreateApi () {
+        set_time_limit(100);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
             return response()->json(['success'=> false, "message" => "Copernica token not found"], 401);
@@ -1159,21 +1160,28 @@ class CopernicaController extends Controller
     }
 
     function profileCreate () {
+        set_time_limit(100);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
             return response()->json( ['success'=>false, 'message' =>"Copernica token not found"], 401 );
         }
         $profile = new Profile();
 
-        $orderPersonEmails = \App\Models\OrderPerson::pluck('email')->all();
-        $subscribers = \App\Models\Subscriber::whereNotIn('email', $orderPersonEmails)->where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
+        $orderPersonEmails = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->pluck('email');
+        $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
         if($subscribers->first()) {
             foreach ($subscribers as $subscriber) {
                 try {
                     $profileData = $subscriber->toArray();
                     unset($profileData['id']);
                     unset($profileData['profile_id']);
-                    if (!empty($subscriber->profile_id)) {
+                    if (in_array($subscriber->email, $orderPersonEmails->toArray())) {
+                        if(!empty($subscriber->profile_id)) {
+                            $delRes = $profile->delete($subscriber->profile_id);
+                        }
+                        $subscriber->delete();
+                    }
+                    elseif (!empty($subscriber->profile_id)) {
                         $parameters = array(
                             'fields'    =>  array("email=={$subscriber->email}"),
                             'async'     =>  1,

@@ -27,6 +27,10 @@ class Profile extends Copernica
         return $this->copernicaApi->put("database/".$id."/profiles", $data, $param);
     }
 
+    function delete($id) {
+        return $this->copernicaApi->delete("profile/{$id}");
+    }
+
     function createSubprofile($profileID, $collectionID, $data, $curlopt_header = false) {
         return $this->copernicaApi->post("profile/{$profileID}/subprofiles/{$collectionID}", $data, $curlopt_header);
     }

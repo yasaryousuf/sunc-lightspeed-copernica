@@ -107,7 +107,9 @@ class LightspeedOrderController extends Controller
                     $variant = (new Order)->variant($product['variant']['resource']['id']);
                     $orderProduct = \App\Models\OrderProduct::updateOrCreate(
                     [                        
-                        'orderRowID' => $product['id']],
+                        'orderId' => $order['id'],
+                        'productId' => $product['id'],
+                    ],
                     [
                         'user_id'  => Auth::user()->id,
                         'orderRowID' => $product['id'],
