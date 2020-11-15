@@ -27,6 +27,11 @@ class Order extends LightspeedModel
         return $this->lightspeed->ordersProducts->get($order_id, $orderProduct_id);
     }
 
+    public function product($product_id)
+    {
+        return $this->lightspeed->products->get($product_id);
+    }
+
     public function variant($variant_id)
     {
         return $this->lightspeed->variants->get($variant_id);

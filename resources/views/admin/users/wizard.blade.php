@@ -54,7 +54,7 @@
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>4</span> User fields</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>4</span> Checkout database</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
@@ -96,8 +96,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="progress" style="height: 20px; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0"
+                                aria-valuemax="100">0%</div>
+                        </div>
                         <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-
                             <form class="kt-form" id="kt_form" novalidate="novalidate" method="post"
                                 action={{ url('wizard') }}>
                                 @csrf
@@ -187,7 +191,7 @@
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
                                             <div class="form-group row">
-                                                <h1>Click 'Next' to Add fields to user database.</h1>
+                                                <h1>Click 'Next' to install checkout database.</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -268,235 +272,240 @@
             });
             // KTWizard3.init();
             wizard = new KTWizard("kt_wizard_v3", {
-                startStep: 1, // Initial active step number
-                clickableSteps: false, // Allow step clicking
-            }).on("beforeNext", function(e) {
-                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                    .prop("disabled", true).addClass('spinner').addClass('spinner-right');
-                if (e.currentStep == 1) {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('/lightspeed-auth-api/settings') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            api_key: $('[name="lightspeed[api_key]"]').val(),
-                            api_secret: $('[name="lightspeed[api_secret]"]').val(),
-                        },
-                        success: function(data) {
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            swal.fire({
-                                title: "",
-                                text: "There are some errors in your submission. Please correct them.",
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            wizard.goTo(1);
-                        },
-                    });
-                } else if (e.currentStep == 2) {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ url('/copernica-auth-api/settings') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            api_key: $('[name="copernica[api_key]"]').val(),
-                            api_secret: $('[name="copernica[api_secret]"]').val(),
-                            token: $('[name="copernica[token]"]').val(),
-                        },
-                        success: function(data) {
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            swal.fire({
-                                title: "",
-                                text: "There are some errors in your submission. Please correct them.",
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            wizard.goTo(2);
-                        },
-                    });
-                } else if (e.currentStep == 3) {
+                    startStep: 1, // Initial active step number
+                    clickableSteps: false, // Allow step clicking
+                })
+                .on('change', function(e) {
+                    $('.progress .progress-bar').css("width", `${(e.currentStep-1)*12.5}%`).text(
+                        `${(e.currentStep-1)*12.5}%`);
+                })
+                .on("beforeNext", function(e) {
+                    $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                        .prop("disabled", true).addClass('spinner').addClass('spinner-right');
+                    if (e.currentStep == 1) {
+                        $('.progress .progress-bar').css("width", "12.5%").text("12.5%");
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ url('/lightspeed-auth-api/settings') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                api_key: $('[name="lightspeed[api_key]"]').val(),
+                                api_secret: $('[name="lightspeed[api_secret]"]').val(),
+                            },
+                            success: function(data) {
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                swal.fire({
+                                    title: "",
+                                    text: "There are some errors in your submission. Please correct them.",
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                wizard.goTo(1);
+                            },
+                        });
+                    } else if (e.currentStep == 2) {
+                        $('.progress .progress-bar').css("width", "25%").text("25%");
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ url('/copernica-auth-api/settings') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                api_key: $('[name="copernica[api_key]"]').val(),
+                                api_secret: $('[name="copernica[api_secret]"]').val(),
+                                token: $('[name="copernica[token]"]').val(),
+                            },
+                            success: function(data) {
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                swal.fire({
+                                    title: "",
+                                    text: "There are some errors in your submission. Please correct them.",
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                wizard.goTo(2);
+                            },
+                        });
+                    } else if (e.currentStep == 3) {
+                        $('.progress .progress-bar').css("width", "37.5%").text("37.5%");
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ url('copernica/database/create/user-api') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(data) {
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                swal.fire({
+                                    title: "",
+                                    text: data.responseJSON.message,
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
 
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('copernica/database/create/user-api') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(data) {
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            console.log(data)
-                            swal.fire({
-                                title: "",
-                                text: data.responseJSON.message,
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-
-                            // wizard.goTo(3);
-                        },
-                    });
-                } else if (e.currentStep == 4) {
-
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('copernica/database/fields/create/user-api') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            console.log(data)
-                            swal.fire({
-                                title: "",
-                                text: data.responseJSON.message,
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            // wizard.goTo(4);
-                        },
-                    });
-                } else if (e.currentStep == 5) {
-
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('copernica/collection/create/order-api') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            //goNext();
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            console.log(data)
-                            swal.fire({
-                                title: "",
-                                text: data.responseJSON.message,
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            // wizard.goTo(5);
-                        },
-                    });
-                } else if (e.currentStep == 6) {
-
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('copernica/collection/create/orderrow-api') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            //goNext();
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            console.log(data)
-                            swal.fire({
-                                title: "",
-                                text: data.responseJSON.message,
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            // wizard.goTo(6);
-                        },
-                    });
-                } else if (e.currentStep == 7) {
-
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('lightspeed/import') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            //goNext();
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            console.log(data)
-                            swal.fire({
-                                title: "",
-                                text: data.responseJSON.message,
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            // wizard.goTo(6);
-                        },
-                    });
-                } else if (e.currentStep == 8) {
-
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('copernica/profile/create') }}",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                        },
-                        success: function(data) {
-                            //goNext();
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                        },
-                        error: function(data) {
-                            console.log(data)
-                            swal.fire({
-                                title: "",
-                                text: data.responseJSON.message,
-                                type: "error",
-                                confirmButtonClass: "btn btn-secondary",
-                            });
-                            $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                .prop("disabled", false)
-                                .removeClass('spinner').removeClass('spinner-right');
-                            // wizard.goTo(6);
-                        },
-                    });
-                }
-            });
+                                // wizard.goTo(3);
+                            },
+                        });
+                    } else if (e.currentStep == 4) {
+                        $('.progress .progress-bar').css("width", "50%").text("50%");
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ url('copernica/database/create/checkout-api') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(data) {
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                swal.fire({
+                                    title: "",
+                                    text: data.responseJSON.message,
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                // wizard.goTo(4);
+                            },
+                        });
+                    } else if (e.currentStep == 5) {
+                        $('.progress .progress-bar').css("width", "62.5%").text("62.5%");
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ url('copernica/collection/create/order-api') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(data) {
+                                //goNext();
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                console.log(data)
+                                swal.fire({
+                                    title: "",
+                                    text: data.responseJSON.message,
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                // wizard.goTo(5);
+                            },
+                        });
+                    } else if (e.currentStep == 6) {
+                        $('.progress .progress-bar').css("width", "75%").text("75%");
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ url('copernica/collection/create/orderrow-api') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(data) {
+                                //goNext();
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                console.log(data)
+                                swal.fire({
+                                    title: "",
+                                    text: data.responseJSON.message,
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                // wizard.goTo(6);
+                            },
+                        });
+                    } else if (e.currentStep == 7) {
+                        $('.progress .progress-bar').css("width", "87.5%").text("87.5%");
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ url('lightspeed/import') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(data) {
+                                //goNext();
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                console.log(data)
+                                swal.fire({
+                                    title: "",
+                                    text: data.responseJSON.message,
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                // wizard.goTo(6);
+                            },
+                        });
+                    } else if (e.currentStep == 8) {
+                        $('.progress .progress-bar').css("width", "100%").text("100%");
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ url('copernica/profile/create') }}",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(data) {
+                                //goNext();
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                            },
+                            error: function(data) {
+                                console.log(data)
+                                swal.fire({
+                                    title: "",
+                                    text: data.responseJSON.message,
+                                    type: "error",
+                                    confirmButtonClass: "btn btn-secondary",
+                                });
+                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                                    .prop("disabled", false)
+                                    .removeClass('spinner').removeClass('spinner-right');
+                                // wizard.goTo(6);
+                            },
+                        });
+                    }
+                });
         });
 
     </script>

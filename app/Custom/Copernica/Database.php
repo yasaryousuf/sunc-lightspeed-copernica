@@ -25,6 +25,34 @@ class Database extends Copernica
 
         return $this->copernicaApi->post("databases", $data);
     }
+
+    // function updateDatabase ($fields, $database_name) {
+    //     // try {
+    //         $databases = $this->getAll();
+    //         $id = $this->getDatabaseId($databases['data'], $database_name);
+    //         $data = array(
+    //             'description' => 'edited',
+    //             'fields'          =>  $fields,
+    //             'collections' => [
+    //                 [
+    //                     'name' => static::ORDER_COLLECTION_NAME
+    //                 ],
+    //                 [
+    //                     'name' => static::ORDER_ROW_COLLECTION_NAME
+    //                 ],
+    //             ]
+    //         );
+    //         // dd($id);
+    //         // dd($data);
+    //         $res = $this->copernicaApi->put("database/{$id}", $data);
+    //     // } catch (\Exception $e) {
+
+    //     // }
+
+    //     return $res;
+    // }
+
+
     function createCollection ($database_id, $name) {
         $collectionData = array(
             'name'      =>  $name,
@@ -96,6 +124,10 @@ class Database extends Copernica
 
         }
         $id = $this->getDatabaseId($databases['data'], $database_name);
+        return $this->copernicaApi->post("database/". $id ."/fields", $data);
+    }
+
+    function createFieldById($data, $id) {
         return $this->copernicaApi->post("database/". $id ."/fields", $data);
     }
 

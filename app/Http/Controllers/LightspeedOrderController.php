@@ -137,12 +137,16 @@ class LightspeedOrderController extends Controller
     {
         $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
         if (empty($lightspeedAuth)) {
-            return redirect('/')->withWarning("Please set API key and secret in settings");
+            return redirect('/wizard')->withWarning("Please set API key and secret in settings");
         }
         try {
-            $orders = (new Order)->get();
+            $orders = \DB::table('orders')
+            ->join('order_people', 'orders.customerId', '=', 'order_people.customerId')
+            ->select('orders.*', 'order_people.firstName', 'order_people.lastName', 'order_people.email')
+            ->where('orders.user_id', \Auth::user()->id)
+            ->get();
         } catch (\Exception $e) {
-            return redirect('/')->withWarning($e->getMessage());
+            return redirect('/lightspeed/orders')->withWarning($e->getMessage());
         }
         
         return view('admin.lightspeed.order.index', compact('orders'));

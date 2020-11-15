@@ -53,7 +53,8 @@ class OrderPerson extends Model
         'lastOnlineAt',
         'languageLocale',
         'customerType',
-        'nieuwsbrief'
+        'nieuwsbrief',
+        'optInNewsletter'
     ];
 
     public function orders()

@@ -22,6 +22,7 @@ class OrderProduct extends Model
         'basePriceIncl',
         'priceIncl',
         'email',
+        'profile_id'
     ];
     
     public function order()

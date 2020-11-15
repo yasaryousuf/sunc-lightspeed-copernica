@@ -5,6 +5,7 @@ use App\Http\Controllers\CopernicaController;
 use App\Http\Controllers\LightspeedDiscountController;
 use App\Http\Controllers\LightspeedOrderController;
 use App\Http\Controllers\LightspeedSubscriberController;
+use App\Http\Controllers\LightspeedCheckoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LightspeedAuthController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\LightspeedController;
     Route::post('lightspeed-auth-api/settings', [LightspeedAuthController::class, 'updateApi']);
     Route::post('copernica-auth-api/settings', [CopernicaAuthController::class, 'updateApi']);
     Route::get('copernica/database/create/user-api', [CopernicaController::class, 'userDatabaseCreateApi']);
+    Route::get('copernica/database/create/checkout-api', [CopernicaController::class, 'checkoutDatabaseCreateApi']);
     Route::get('copernica/database/fields/create/user-api', [CopernicaController::class, 'userDatabaseFieldsCreateApi']);
     Route::get('copernica/collection/create/order-api', [CopernicaController::class, 'orderCollectionCreateApi']);
     Route::get('copernica/collection/create/orderrow-api', [CopernicaController::class, 'orderRowCollectionCreateApi']);
@@ -51,6 +53,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('lightspeed/orders', [LightspeedOrderController::class, 'show']);
     Route::get('lightspeed/orders/import', [LightspeedOrderController::class, 'import']);
+
+    Route::get('lightspeed/checkouts', [LightspeedCheckoutController::class, 'show']);
+    Route::get('lightspeed/checkout/import', [LightspeedCheckoutController::class, 'import']);
 
 
     Route::get('copernica-auth/settings', [CopernicaAuthController::class, 'edit']);

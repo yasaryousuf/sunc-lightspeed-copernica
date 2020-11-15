@@ -25,7 +25,7 @@ class CreateSubscribersTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('languageCode')->nullable();
             $table->string('languageTitle')->nullable();
-            $table->string('optInNewsletter')->default(true);
+            $table->tinyInteger('optInNewsletter')->default(true);
             $table->string('nieuwsbrief')->default('Ja');
             $table->tinyInteger('isSaved')->nullable();
             $table->unsignedBigInteger('profile_id')->nullable();

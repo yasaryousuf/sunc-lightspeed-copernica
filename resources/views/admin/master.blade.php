@@ -33,8 +33,7 @@
         type="text/css" />
     <link href="{{ asset('metronic/theme/default/demo1/dist/assets/css/skins/aside/dark.css') }}" rel="stylesheet"
         type="text/css" />
-    <link rel="shortcut icon"
-        href="https://keenthemes.com/metronic/themes/metronic/theme/default/demo1/dist/assets/media/logos/favicon.ico" />
+    <link rel="shortcut icon" href="{{url('public/assets/images/logo-border.png')}}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .alert {
@@ -50,8 +49,8 @@
     class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
     <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
         <div class="kt-header-mobile__logo">
-            <a href="/">
-                <img alt="Logo" src="{{ asset('metronic/theme/default/demo1/dist/assets/media/logos/ltoc.png') }}" />
+            <a href="{{url('/')}}">
+                <img src="{{url('public/assets/images/logo.png')}}">
             </a>
         </div>
         <div class="kt-header-mobile__toolbar">
@@ -92,7 +91,7 @@
                             <div
                                 class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-xl">
                                 <div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x"
-                                    style="background-image: url({{ asset('metronic/theme/default/demo1/dist/assets/media/misc/bg-1.jpg') }})">
+                                    style="background: url({{url('public/assets/images/BG.jpg')}}); background-repeat: no-repeat;background-size: cover;">
                                     <div class="kt-user-card__avatar">
                                         <img class="kt-hidden" alt="Pic"
                                             src="{{ asset('metronic/theme/default/demo1/dist/assets/media/users/300_25.jpg') }}" />
@@ -119,17 +118,16 @@
                 <div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">
                     <div class="kt-container  kt-container--fluid ">
                         <div class="kt-footer__copyright">
-                            2020&nbsp;&copy;&nbsp;<a href="http://keenthemes.com/metronic" target="_blank"
-                                class="kt-link">Keenthemes</a>
+                            <a class="kt-link">&copy 2020 API by Website</a>
                         </div>
-                        <div class="kt-footer__menu">
+                        <!-- <div class="kt-footer__menu">
                             <a href="http://keenthemes.com/metronic" target="_blank"
                                 class="kt-footer__menu-link kt-link">About</a>
                             <a href="http://keenthemes.com/metronic" target="_blank"
                                 class="kt-footer__menu-link kt-link">Team</a>
                             <a href="http://keenthemes.com/metronic" target="_blank"
                                 class="kt-footer__menu-link kt-link">Contact</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

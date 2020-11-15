@@ -52,6 +52,7 @@ class LightspeedSubscriberController extends Controller
     }
 
     public function importapi() {
+        set_time_limit(120);
         $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
         if (empty($lightspeedAuth)) {
             return response()->json( ['success'=>false, 'message' =>"Please set API key and secret in settings"], 401 );
@@ -59,6 +60,7 @@ class LightspeedSubscriberController extends Controller
         try {
             $subscribers = (new \App\Custom\Lightspeed\Subscriber)->get();
             $orders = (new \App\Custom\Lightspeed\Order)->get();
+            $checkouts = (new \App\Custom\Lightspeed\Checkout)->get();
         } catch (\Exception $e) {
             return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
         }
@@ -152,6 +154,8 @@ class LightspeedSubscriberController extends Controller
                         'customerUpdatedAt' => $customerUpdatedAt ? $customerUpdatedAt->format('Y-m-d H:i:s') : null,
                         'lastOnlineAt' => $lastOnlineAt ? $lastOnlineAt->format('Y-m-d H:i:s') : null,
                         'customerType' => $customer['type'],
+                        'optInNewsletter' => $order['newsletterSubscribed'],
+                        'nieuwsbrief' => $order['newsletterSubscribed'] ? 'Ja' : 'Nee',
                     ]
                 );
 
@@ -195,6 +199,67 @@ class LightspeedSubscriberController extends Controller
                         'email' => $order['email'],
                     ]);
                 }
+            } catch (\Exception $e) {
+                return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
+            }
+        }
+
+        foreach ($checkouts as $checkout) {
+            if(!empty($checkout['payment_method'])) {
+                continue;
+            }
+            try {
+                $createdAt = $checkout['created_at'] ? new \DateTime($checkout['created_at']) : null;
+                $updatedAt = $checkout['updated_at'] ? new \DateTime($checkout['updated_at']) : null;
+                $customer = $checkout['customer'];
+                $billing_address = $checkout['billing_address'];
+                $shipping_address = $checkout['shipping_address'];
+                $birthDate = $customer['birthdate'] ? new \DateTime($customer['birthdate']) : null;
+                
+
+                $orderPerson = \App\Models\Checkout::updateOrCreate(
+                    [                        
+                        'checkoutId' => $checkout['id'],
+                    ],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'checkoutId' => $checkout['id'],
+                        'nationalId' => $customer['national_id'],
+                        'email' => $customer['email'],
+                        'gender' => $customer['gender'],
+                        'firstName' => $customer['firstname'],
+                        'lastName' => $customer['lastname'],
+                        'phone' => $customer['phone'],
+                        'mobile' => $customer['mobile'],
+                        'birthDate' => $birthDate ? $birthDate->format('Y-m-d H:i:s') : null,
+                        'company' => $customer['company'],
+                        'coCNumber' => $customer['cocnumber'],
+                        'vatNumber' => $customer['vatnumber'],
+                        'addressBillingName' => $billing_address['name'],
+                        'addressBillingStreet' => $billing_address['address1'],
+                        'addressBillingStreet2' => $billing_address['address2'],
+                        'addressBillingNumber' => $billing_address['number'],
+                        'addressBillingExtension' => $billing_address['extension'],
+                        'addressBillingZipcode' => $billing_address['zipcode'],
+                        'addressBillingCity' => $billing_address['city'],
+                        'addressBillingRegion' => $billing_address['region'],
+                        'addressBillingCountryCode' => $billing_address['country'],
+                        'addressShippingName' => $shipping_address['name'],
+                        'addressShippingStreet' => $shipping_address['address1'],
+                        'addressShippingStreet2' => $shipping_address['address2'],
+                        'addressShippingNumber' => $shipping_address['number'],
+                        'addressShippingExtension' => $shipping_address['extension'],
+                        'addressShippingZipcode' => $shipping_address['zipcode'],
+                        'addressShippingCity' => $shipping_address['city'],
+                        'addressShippingRegion' => $shipping_address['region'],
+                        'addressShippingCountryCode' => $shipping_address['country'],
+                        'createdAt' => $createdAt ? $createdAt->format('Y-m-d H:i:s') : null,
+                        'updatedAt' => $updatedAt ? $updatedAt->format('Y-m-d H:i:s') : null,
+                        'customerType' => $customer['type'],
+                        'optInNewsletter' => $checkout['newsletter'] ? true : false,
+                        'nieuwsbrief' => $checkout['newsletter'] ? 'Ja' : 'Nee',
+                    ]
+                );
             } catch (\Exception $e) {
                 return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
             }

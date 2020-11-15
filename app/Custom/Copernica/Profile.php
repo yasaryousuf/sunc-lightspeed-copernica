@@ -35,4 +35,8 @@ class Profile extends Copernica
         return $this->copernicaApi->post("profile/{$profileID}/subprofiles/{$collectionID}", $data, $curlopt_header);
     }
 
+    function updateSubprofile($profileID, $collectionID, $data, $param) {
+        return $this->copernicaApi->put("profile/{$profileID}/subprofiles/{$collectionID}", $data, $param);
+    }
+
 }

@@ -1,15 +1,14 @@
-<div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
+<div class="kt-aside kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside" style="background: url({{url('public/assets/images/BG.jpg')}}); background-repeat: no-repeat;background-size: cover;">
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo">
             <a href="{{ url('/') }}">
-                <img alt="Logo"
-                    src="{{ asset('metronic/theme/default/demo1/dist/assets/media/logos/logo-light.png') }}" />
+                <img src="{{url('public/assets/images/logo.png')}}" width="100">
             </a>
         </div>
         <div class="kt-aside__brand-tools">
             <button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler">
-                <span><i class="flaticon2-fast-back" style="color: #5c5e81;"></i></span>
-                <span><i class="flaticon2-fast-next" style="color: #5c5e81;"></i></span>
+                <span><i class="flaticon2-fast-back" style="color: #fff;"></i></span>
+                <span><i class="flaticon2-fast-next" style="color: #fff;"></i></span>
             </button>
         </div>
     </div>

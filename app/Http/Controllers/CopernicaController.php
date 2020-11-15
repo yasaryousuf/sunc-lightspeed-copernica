@@ -98,7 +98,7 @@ class CopernicaController extends Controller
                 ],
                 [
                     'name' => 'orderNumber',
-                    'type' => 'string',
+                    'type' => 'text',
                     'displayed' => true
                 ],
                 [
@@ -174,12 +174,12 @@ class CopernicaController extends Controller
                 ],
                 [
                     'name' => 'productId',
-                    'type' => 'integer',
+                    'type' => 'text',
                     'displayed' => true
                 ],
                 [
                     'name' => 'productTitle',
-                    'type' => 'string',
+                    'type' => 'text',
                     'displayed' => true
                 ],
                 [
@@ -189,7 +189,7 @@ class CopernicaController extends Controller
                 ],
                 [
                     'name' => 'varientTitle',
-                    'type' => 'string',
+                    'type' => 'text',
                     'displayed' => true
                 ],
                 [
@@ -233,6 +233,7 @@ class CopernicaController extends Controller
         }
         return response()->json(['success'=> true, "message" => "Order row collection created"], 200);
     }
+
     function personCollectionCreate() {
         try {
             $this->collectionCreate(Copernica::ORDER_PERSON_COLLECTION_NAME);
@@ -283,7 +284,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'number',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'createdAt',
@@ -323,7 +324,7 @@ class CopernicaController extends Controller
     }
 
     function userDatabaseFieldsCreateApi () {
-        set_time_limit(100);
+        set_time_limit(120);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
             return response()->json(['success'=> false, "message" => "Copernica token not found"], 401);
@@ -522,6 +523,8 @@ class CopernicaController extends Controller
         ];
 
         $database = new Database;
+        // $res = $database->updateDatabase($orderProfileDatas, Copernica::USER_DATABASE_NAME);
+        // dd($res);
         foreach ($orderProfileDatas as $data) {
             try {
                 $status = $database->createField($data, Copernica::USER_DATABASE_NAME);
@@ -530,7 +533,7 @@ class CopernicaController extends Controller
             }
         }
         
-        return response()->json(['success'=> true, "message" => "subscriber fields created"], 200);
+        // return response()->json(['success'=> true, "message" => "subscriber fields created"], 200);
     }
 
     function subscriberDatabaseFieldsCreate () {
@@ -588,7 +591,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'nationalId',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'email',
@@ -596,27 +599,27 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'gender',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'firstName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'lastName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'phone',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'mobile',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'remoteIp',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'birthDate',
@@ -628,103 +631,103 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'companyName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'companyCoCNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'companyVatNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingStreet',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingStreet2',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingExtension',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingZipcode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingCity',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingRegion',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingCountryCode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingCountryTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingStreet',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingStreet2',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingExtension',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingZipcode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingCity',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingRegion',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingCountryCode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingCountryTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'languageCode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'languageTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'isConfirmedCustomer',
@@ -744,11 +747,11 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'languageLocale',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'customerType',
-                'type' => 'string'
+                'type' => 'text'
             ],
         ];
 
@@ -783,7 +786,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'productTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'varientId',
@@ -791,7 +794,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'varientTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'quantityOrdered',
@@ -924,7 +927,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'nationalId',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'email',
@@ -932,27 +935,27 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'gender',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'firstName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'lastName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'phone',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'mobile',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'remoteIp',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'birthDate',
@@ -964,103 +967,103 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'companyName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'companyCoCNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'companyVatNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingStreet',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingStreet2',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingExtension',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingZipcode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingCity',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingRegion',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingCountryCode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressBillingCountryTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingName',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingStreet',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingStreet2',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingNumber',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingExtension',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingZipcode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingCity',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingRegion',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingCountryCode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'addressShippingCountryTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'languageCode',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'languageTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'isConfirmedCustomer',
@@ -1080,11 +1083,11 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'languageLocale',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'customerType',
-                'type' => 'string'
+                'type' => 'text'
             ],
         ];
 
@@ -1110,7 +1113,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'productTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'varientId',
@@ -1118,7 +1121,7 @@ class CopernicaController extends Controller
             ],
             [
                 'name' => 'varientTitle',
-                'type' => 'string'
+                'type' => 'text'
             ],
             [
                 'name' => 'quantityOrdered',
@@ -1160,7 +1163,7 @@ class CopernicaController extends Controller
     }
 
     function profileCreate () {
-        set_time_limit(100);
+        set_time_limit(120);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
             return response()->json( ['success'=>false, 'message' =>"Copernica token not found"], 401 );
@@ -1204,6 +1207,7 @@ class CopernicaController extends Controller
         $databases = (new Copernica)->getAllDatabases();
 
         $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+        $checkoutDbId = (new Copernica)->getDatabaseId($databases['data'], Copernica::CHECKOUT_DATABASE_NAME);
         $collections = (new Copernica)->getAllCollections($id);
         $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
         $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
@@ -1211,6 +1215,37 @@ class CopernicaController extends Controller
         $profile = new Profile();
 
         $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+        $checkouts = \App\Models\Checkout::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'checkoutId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'birthDate', 'company', 'coCNumber', 'vatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'createdAt', 'updatedAt', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+        
+        if ($checkouts->first()) {
+
+            foreach ($checkouts as $checkout) {
+                try {
+                    $checkoutData = $checkout->toArray();
+                    $checkoutId = $checkoutData['checkoutId'];
+                    unset($checkoutData['id']);
+                    unset($checkoutData['checkoutId']);
+                    unset($checkoutData['profile_id']);
+                    if (!empty($checkout->profile_id)) {
+                        $parameters = array(
+                            'fields'    =>  array("checkoutId=={$checkout->checkoutId}"),
+                            'async'     =>  1,
+                            'create'    =>  0
+                        );
+                        $profile->update($checkoutData, $checkoutDbId, $parameters);
+                        $profileID = $checkout->profile_id;
+                    } else {
+                        $profileID = $profile->create($checkoutData, $checkoutDbId, true);
+                        $checkout->isSaved = true;
+                        $checkout->profile_id = $profileID;
+                        $checkout->save();
+                    }
+                } catch (\Exception $e) {
+                    return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
+                }
+            }
+        }
+        
         if ($subscribers->first()) {
 
             foreach ($subscribers as $subscriber) {
@@ -1226,7 +1261,7 @@ class CopernicaController extends Controller
                             'async'     =>  1,
                             'create'    =>  0
                         );
-                        $profile->update($subscriberData, Copernica::USER_DATABASE_NAME, $parameters);
+                        $profile->update($subscriberData, $id, $parameters);
                         $profileID = $subscriber->profile_id;
                     } else {
                         $profileID = $profile->create($subscriberData, $id, true);
@@ -1234,20 +1269,42 @@ class CopernicaController extends Controller
                         $subscriber->profile_id = $profileID;
                         $subscriber->save();
                     }
-                    $orders = \App\Models\Order::where('customerId', $customerId)->whereNull('isSaved')->select('id', 'orderId', 'orderNumber', 'createdAt', 'updatedAt', 'status', 'priceIncl', 'email', 'deliveryDate')->get();
+                    $orders = \App\Models\Order::where('customerId', $customerId)->select('id', 'customerId', 'orderId', 'orderNumber', 'createdAt', 'updatedAt', 'status', 'priceIncl', 'email', 'deliveryDate', 'profile_id')->get();
                     foreach($orders as $order ) {
                         $orderData = $order->toArray();
                         unset($orderData['id']);
-                        $orderRes = $profile->createSubprofile($profileID, $orderCollectionID, $orderData, true);
-                        $order->isSaved = true;
-                        $order->save();
-                        $products = \App\Models\OrderProduct::where('orderId', $order->orderId)->whereNull('isSaved')->select('id', 'productId', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email')->get();
+                        unset($orderData['profile_id']);
+                        if (!empty($order->profile_id)) {
+                            $parameters = array(
+                                'fields'    =>  array("orderId=={$order->orderId}"),
+                                'async'     =>  1,
+                                'create'    =>  0
+                            );
+                            $profile->updateSubprofile($profileID, $orderCollectionID, $orderData, $parameters);
+                        } else {
+                            $orderID = $profile->createSubprofile($profileID, $orderCollectionID, $orderData, true);
+                            $order->isSaved = true;
+                            $subscriber->profile_id = $orderID;
+                            $order->save();
+                        }
+                        $products = \App\Models\OrderProduct::where('orderId', $order->orderId)->select('id', 'orderId', 'productId', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email', 'profile_id')->get();
                         foreach($products as $product ) {
                             $productData = $product->toArray();
                             unset($productData['id']);
-                            $productRes = $profile->createSubprofile($profileID, $productCollectionID, $productData, true);
-                            $order->isSaved = true;
-                            $order->save(); 
+                            unset($productData['profile_id']);
+                            if (!empty($product->profile_id)) {
+                                $parameters = array(
+                                    'fields'    =>  array("id=={$product->profile_id}"),
+                                    'async'     =>  1,
+                                    'create'    =>  0
+                                );
+                                $profile->updateSubprofile($profileID, $productCollectionID, $productData, $parameters);
+                            } else {
+                                $productID = $profile->createSubprofile($profileID, $productCollectionID, $productData, true);
+                                $order->isSaved = true;
+                                $order->profile_id = $productID;
+                                $order->save(); 
+                            }
                         }
                     }
                 } catch (\Exception $e) {
@@ -1272,6 +1329,377 @@ class CopernicaController extends Controller
             }
             $database = new Database;
             $status = $database->createDatabase(Copernica::USER_DATABASE_NAME);
+            $orderProfileDatas = 
+            [
+                [
+                    'name' => 'createdAt',
+                    'type' => 'datetime'
+                ],
+                [
+                    'name' => 'updatedAt',
+                    'type' => 'datetime'
+                ],
+                [
+                    'name' => 'nationalId',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'email',
+                    'type' => 'email',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'gender',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'firstName',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'lastName',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'phone',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'mobile',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'remoteIp',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'birthDate',
+                    'type' => 'empty_date'
+                ],
+                [
+                    'name' => 'isCompany',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'companyName',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'companyCoCNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'companyVatNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingName',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingStreet',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingStreet2',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingExtension',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingZipcode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingCity',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingRegion',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingCountryCode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingCountryTitle',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingName',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingStreet',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingStreet2',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingExtension',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingZipcode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingCity',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingRegion',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingCountryCode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingCountryTitle',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'languageCode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'languageTitle',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'isConfirmedCustomer',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'customerCreatedAt',
+                    'type' => 'empty_datetime',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'customerType',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'optInNewsletter',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'nieuwsbrief',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'customerUpdatedAt',
+                    'type' => 'empty_datetime'
+                ],
+                [
+                    'name' => 'lastOnlineAt',
+                    'type' => 'empty_datetime'
+                ],
+                [
+                    'name' => 'languageLocale',
+                    'type' => 'text'
+                ]
+            ];
+
+            $databases = $database->getAll();
+            $id = $database->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+            foreach ($orderProfileDatas as $data) {
+                $status = $database->createFieldById($data, $id);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success'=> false, "message" => $e->getMessage()], 401);
+        }
+        return response()->json(['success'=> true, "message" => "Successfully"]);
+        
+    }
+
+
+    public function checkoutDatabaseCreateApi()
+    {
+        try {
+            $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
+            if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
+                return response()->json(['success'=> false, "message" => "Copernica token not found"], 401);
+            }
+            $database = new Database;
+            $status = $database->createDatabase(Copernica::CHECKOUT_DATABASE_NAME);
+            $orderProfileDatas = 
+            [
+                [
+                    'name' => 'checkoutId',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'createdAt',
+                    'type' => 'datetime'
+                ],
+                [
+                    'name' => 'updatedAt',
+                    'type' => 'datetime'
+                ],
+                [
+                    'name' => 'nationalId',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'email',
+                    'type' => 'email',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'gender',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'firstName',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'lastName',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'phone',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'mobile',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'birthDate',
+                    'type' => 'empty_date'
+                ],
+                [
+                    'name' => 'company',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'coCNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'vatNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingName',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingStreet',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingStreet2',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingExtension',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingZipcode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingCity',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingRegion',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressBillingCountryCode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingName',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingStreet',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingStreet2',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingNumber',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingExtension',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingZipcode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingCity',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingRegion',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'addressShippingCountryCode',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'customerType',
+                    'type' => 'text'
+                ],
+                [
+                    'name' => 'optInNewsletter',
+                    'type' => 'integer',
+                    'displayed' => true
+                ],
+                [
+                    'name' => 'nieuwsbrief',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+            ];
+
+            $databases = $database->getAll();
+            $id = $database->getDatabaseId($databases['data'], Copernica::CHECKOUT_DATABASE_NAME);
+            foreach ($orderProfileDatas as $data) {
+                $status = $database->createFieldById($data, $id);
+            }
         } catch (\Exception $e) {
             return response()->json(['success'=> false, "message" => $e->getMessage()], 401);
         }
@@ -1280,33 +1708,273 @@ class CopernicaController extends Controller
     }
 
     function profileCreateFromSubscriber () {
+        set_time_limit(120);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
-        if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
-            return redirect('/copernica/setup')->withWarning("Copernica token not found");
-        }
-        $profile = new Profile();
+        $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
 
-        $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->whereNull('isSaved')->select('id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
-        if($subscribers->first()) {
-            foreach ($subscribers as $subscriber) {
-                try {
+        if (empty($lightspeedAuth) || empty($lightspeedAuth->api_key) || empty($copernicaAuth) || empty($copernicaAuth->token)) {
+            return redirect('/wizard')->withWarning("Token not found");
+        }
+        try {
+            $subscribers = (new \App\Custom\Lightspeed\Subscriber)->get();
+            $orders = (new \App\Custom\Lightspeed\Order)->get();
+        } catch (\Exception $e) {
+            return redirect('/copernica/sync')->withWarning($e->getMessage());
+        }
+
+        $newSubscribers = array_map(function($x) { 
+            $x['isConfirmedCustomer'] = $x['isConfirmed'];
+            $x['languageCode'] = $x['language']['code'] ?? null;
+            $x['languageTitle'] = $x['language']['title'] ?? null;
+            unset($x['isConfirmed']); 
+            unset($x['language']); 
+            unset($x['doNotifyConfirmed']); 
+            $x['lightspeed_id'] = $x['id'];
+            $x['user_id'] = Auth::user()->id;
+            unset($x['id']);
+            $createdAt = new \DateTime($x['createdAt']);
+            $updatedAt = new \DateTime($x['updatedAt']);
+            $x['createdAt'] = $createdAt->format('Y-m-d H:i:s');
+            $x['updatedAt'] = $updatedAt->format('Y-m-d H:i:s');
+            return $x; 
+        }, $subscribers);
+
+        foreach ($newSubscribers as $subscriber) {
+            try {
+                $profile = \App\Models\Subscriber::updateOrCreate(
+                    ['email'     =>  $subscriber['email']],
+                    $subscriber
+                );
+            } catch (\Exception $e) {
+                return redirect('/copernica/sync')->withWarning($e->getMessage());
+            }
+        }
+
+        foreach ($orders as $order) {
+            try {
+                $createdAt = $order['createdAt'] ? new \DateTime($order['createdAt']) : null;
+                $updatedAt = $order['updatedAt'] ? new \DateTime($order['updatedAt']) : null;
+                $customer = (new \App\Custom\Lightspeed\Customer)->getById($order['customer']['resource']['id']);
+                $customerCreatedAt = $customer['createdAt'] ? new \DateTime($customer['createdAt']) : null;
+                $customerUpdatedAt = $customer['updatedAt'] ? new \DateTime($customer['updatedAt']) : null;
+                $birthDate = $customer['birthDate'] ? new \DateTime($customer['birthDate']) : null;
+                
+                $lastOnlineAt = $customer['lastOnlineAt'] ? new \DateTime($customer['lastOnlineAt']) : null;
+
+                $orderPerson = \App\Models\OrderPerson::updateOrCreate(
+                    [                        
+                        'email' => $order['email'],
+                    ],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'customerId' => $customer['id'],
+                        'nationalId' => $customer['nationalId'],
+                        'email' => $customer['email'],
+                        'gender' => $customer['gender'],
+                        'firstName' => $customer['firstname'],
+                        'lastName' => $customer['lastname'],
+                        'phone' => $customer['phone'],
+                        'mobile' => $customer['mobile'],
+                        'remoteIp' => $customer['remoteIp'],
+                        'birthDate' => $birthDate ? $birthDate->format('Y-m-d H:i:s') : null,
+                        'isCompany' => $customer['isCompany'],
+                        'companyName' => $customer['companyName'],
+                        'companyCoCNumber' => $customer['companyCoCNumber'],
+                        'companyVatNumber' => $customer['companyVatNumber'],
+                        'addressBillingName' => $customer['addressBillingName'],
+                        'addressBillingStreet' => $customer['addressBillingStreet'],
+                        'addressBillingStreet2' => $customer['addressBillingStreet2'],
+                        'addressBillingNumber' => $customer['addressBillingNumber'],
+                        'addressBillingExtension' => $customer['addressBillingExtension'],
+                        'addressBillingZipcode' => $customer['addressBillingZipcode'],
+                        'addressBillingCity' => $customer['addressBillingCity'],
+                        'addressBillingRegion' => $customer['addressBillingRegion'],
+                        'addressBillingCountryCode' => $customer['addressBillingCountry']['code'],
+                        'addressBillingCountryTitle' => $customer['addressBillingCountry']['title'],
+                        'addressShippingName' => $customer['addressShippingName'],
+                        'addressShippingStreet' => $customer['addressShippingStreet'],
+                        'addressShippingStreet2' => $customer['addressShippingStreet2'],
+                        'addressShippingNumber' => $customer['addressShippingNumber'],
+                        'addressShippingExtension' => $customer['addressShippingExtension'],
+                        'addressShippingZipcode' => $customer['addressShippingZipcode'],
+                        'addressShippingCity' => $customer['addressShippingCity'],
+                        'addressShippingRegion' => $customer['addressShippingRegion'],
+                        'addressShippingCountryCode' => $customer['addressShippingCountry']['code'],
+                        'addressShippingCountryTitle' => $customer['addressShippingCountry']['title'],
+                        'languageCode' => $customer['language']['code'],
+                        'languageTitle' => $customer['language']['title'],
+                        'languageLocale' => $customer['language']['locale'],
+                        'isConfirmedCustomer' => $customer['isConfirmed'],
+                        'customerCreatedAt' => $customerCreatedAt ? $customerCreatedAt->format('Y-m-d H:i:s') : null,
+                        'customerUpdatedAt' => $customerUpdatedAt ? $customerUpdatedAt->format('Y-m-d H:i:s') : null,
+                        'lastOnlineAt' => $lastOnlineAt ? $lastOnlineAt->format('Y-m-d H:i:s') : null,
+                        'customerType' => $customer['type'],
+                        'optInNewsletter' => $order['newsletterSubscribed'],
+                        'nieuwsbrief' => $order['newsletterSubscribed'] ? 'Ja' : 'Nee',
+                    ]
+                );
+
+                $orderObj = \App\Models\Order::updateOrCreate(
+                    [
+                        'orderId'     =>  $order['id']],
+                    [
+                        'user_id' => \Auth::user()->id,
+                        'orderId' => $order['id'],
+                        'customerId' => $customer['id'],
+                        'orderNumber' => $order['number'],
+                        'createdAt' => $createdAt ? $createdAt->format('Y-m-d H:i:s') : null,
+                        'updatedAt' => $updatedAt ? $updatedAt->format('Y-m-d H:i:s') : null,
+                        'status' => $order['status'],
+                        'priceIncl' => $order['priceIncl'],
+                        'email' => $order['email'],
+                        'deliveryDate' => $order['deliveryDate'],
+                    ]
+                );
+
+                $products = (new \App\Custom\Lightspeed\Order)->orderProducts($order['id']);
+                foreach ($products as $product) {
+                    $variant = (new \App\Custom\Lightspeed\Order)->variant($product['variant']['resource']['id']);
+                    $orderProduct = \App\Models\OrderProduct::updateOrCreate(
+                    [                        
+                        'orderId' => $order['id'],
+                        'productId' => $product['id'],
+                    ],
+                    [
+                        'user_id'  => \Auth::user()->id,
+                        'orderRowID' => $product['id'],
+                        'orderId' => $order['id'],
+                        'productId' => $product['id'],
+                        'productTitle' => $product['productTitle'],
+                        'varientId' => $product['variant']['resource']['id'],
+                        'varientTitle' => $variant['title'],
+                        'quantityOrdered' => $product['quantityOrdered'],
+                        'quantityReturned' => $product['quantityReturned'],
+                        'basePriceIncl' => $product['basePriceIncl'],
+                        'priceIncl' => $product['priceIncl'],
+                        'email' => $order['email'],
+                    ]);
+                }
+            } catch (\Exception $e) {
+                return redirect('/copernica/sync')->withWarning($e->getMessage());
+            }
+        }
+
+        try {
+            $profile = new Profile();
+
+            $orderPersonEmails = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->pluck('email');
+            $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
+            if($subscribers->first()) {
+                foreach ($subscribers as $subscriber) {
                     $profileData = $subscriber->toArray();
                     unset($profileData['id']);
-                    $status = $profile->create($profileData, Copernica::USER_DATABASE_NAME);
+                    unset($profileData['profile_id']);
+                    if (in_array($subscriber->email, $orderPersonEmails->toArray())) {
+                        if(!empty($subscriber->profile_id)) {
+                            $delRes = $profile->delete($subscriber->profile_id);
+                        }
+                        $subscriber->delete();
+                    }
+                    elseif (!empty($subscriber->profile_id)) {
+                        $parameters = array(
+                            'fields'    =>  array("email=={$subscriber->email}"),
+                            'async'     =>  1,
+                            'create'    =>  0
+                        );
+                        $profile->update($profileData, Copernica::USER_DATABASE_NAME, $parameters);
+                        $profileID = $subscriber->profile_id;
+                    } else {
+                        $profileID = $profile->create($profileData, Copernica::USER_DATABASE_NAME, true);
+                        $subscriber->isSaved = true;
+                        $subscriber->profile_id = $profileID;
+                        $subscriber->save();
+                    }
+                }
+            }
+
+            $databases = (new Copernica)->getAllDatabases();
+
+            $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+            $collections = (new Copernica)->getAllCollections($id);
+            $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
+            $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
+
+            $profile = new Profile();
+
+            $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+            
+        } catch (\Exception $e) {
+            return redirect('/copernica/sync')->withWarning($e->getMessage());
+        }
+        if ($subscribers->first()) {
+
+            foreach ($subscribers as $subscriber) {
+                try {
+                    $subscriberData = $subscriber->toArray();
+                    $customerId = $subscriberData['customerId'];
+                    unset($subscriberData['id']);
+                    unset($subscriberData['customerId']);
+                    unset($subscriberData['profile_id']);
+                    if (!empty($subscriber->profile_id)) {
+                        $parameters = array(
+                            'fields'    =>  array("email=={$subscriber->email}"),
+                            'async'     =>  1,
+                            'create'    =>  0
+                        );
+                        $profile->update($subscriberData, $id, $parameters);
+                        $profileID = $subscriber->profile_id;
+                    } else {
+                        $profileID = $profile->create($subscriberData, $id, true);
+                        $subscriber->isSaved = true;
+                        $subscriber->profile_id = $profileID;
+                        $subscriber->save();
+                    }
+                    $orders = \App\Models\Order::where('customerId', $customerId)->select('id', 'customerId', 'orderId', 'orderNumber', 'createdAt', 'updatedAt', 'status', 'priceIncl', 'email', 'deliveryDate', 'profile_id')->get();
+                    foreach($orders as $order ) {
+                        $orderData = $order->toArray();
+                        unset($orderData['id']);
+                        unset($orderData['profile_id']);
+                        if (!empty($order->profile_id)) {
+                            $parameters = array(
+                                'fields'    =>  array("orderId=={$order->orderId}"),
+                                'async'     =>  1,
+                                'create'    =>  0
+                            );
+                            $profile->updateSubprofile($profileID, $orderCollectionID, $orderData, $parameters);
+                        } else {
+                            $orderID = $profile->createSubprofile($profileID, $orderCollectionID, $orderData, true);
+                            $order->isSaved = true;
+                            $order->profile_id = $orderID;
+                            $order->save();
+
+                        }
+                        $products = \App\Models\OrderProduct::where('orderId', $order->orderId)->select('id', 'orderId', 'productId', 'productTitle', 'varientId', 'varientTitle', 'quantityOrdered', 'quantityReturned', 'basePriceIncl', 'priceIncl', 'email', 'profile_id')->get();
+                        foreach($products as $product ) {
+                            $productData = $product->toArray();
+                            unset($productData['id']);
+                            unset($productData['profile_id']);
+                            if (!empty($product->profile_id)) {
+                                $parameters = array(
+                                    'fields'    =>  array("id=={$product->profile_id}"),
+                                    'async'     =>  1,
+                                    'create'    =>  0
+                                );
+                                $profile->updateSubprofile($profileID, $productCollectionID, $productData, $parameters);
+                            } else {
+                                $productID = $profile->createSubprofile($profileID, $productCollectionID, $productData, true);
+                                $product->isSaved = true;
+                                $product->profile_id = $productID;
+                                $product->save(); 
+                            }
+                        }
+                    }
                 } catch (\Exception $e) {
                     return redirect('/copernica/sync')->withWarning($e->getMessage());
                 }
-                $subscriber->isSaved = true;
-                $subscriber->save();
             }
-        } else {
-            return redirect('/copernica/sync')->withSuccess("All updated");
         }
 
-
-        return redirect('/copernica/sync')->withSuccess("Profile created");
-        
-
+        return redirect('/copernica/sync')->withSuccess("Synchronization successfully completed");
     }
 
     function profileCreateFromOrder () {
@@ -1376,7 +2044,7 @@ class CopernicaController extends Controller
         // }
 
 
-        return redirect('/copernica/sync')->withSuccess("Profile created");
+        return redirect('/copernica/sync')->withSuccess("Synchronization successfully completed");
         
 
     }
