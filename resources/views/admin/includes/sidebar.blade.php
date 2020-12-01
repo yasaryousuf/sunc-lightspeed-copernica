@@ -1,8 +1,9 @@
-<div class="kt-aside kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside" style="background: url({{url('public/assets/images/BG.jpg')}}); background-repeat: no-repeat;background-size: cover;">
+<div class="kt-aside kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside"
+    style="background: url({{ url('public/assets/images/BG.jpg') }}); background-repeat: no-repeat;background-size: cover;">
     <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo">
             <a href="{{ url('/') }}">
-                <img src="{{url('public/assets/images/logo.png')}}" width="100">
+                <img src="{{ url('public/assets/images/logo.png') }}" width="100">
             </a>
         </div>
         <div class="kt-aside__brand-tools">
@@ -60,106 +61,113 @@
                         </div>
                     </li>
 
-                @endif
-                <li class="kt-menu__item kt-menu__item--submenu @yield('light_active')" aria-haspopup="true"
-                    data-ktmenu-submenu-toggle="hover">
-                    <a href="javascript:" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><i
-                                class="flaticon2-shopping-cart"></i></span><span
-                            class="kt-menu__link-text">Lightspeed</span><i
-                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                    <div class="kt-menu__submenu ">
-                        <span class="kt-menu__arrow"></span>
-                        <ul class="kt-menu__subnav">
-                            <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
-                                    class="kt-menu__link"><span class="kt-menu__link-text"></span></span></li>
-                            <li class="kt-menu__item kt-menu__item--submenu @yield('light_subs_sub_active')"
-                                aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
-                                    href="{{ url('lightspeed/subscribers') }}" class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Customers</span></a>
-                            </li>
-                            {{-- <li
-                                class="kt-menu__item  kt-menu__item--submenu @yield('light_discount_sub_active')"
-                                aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
-                                    href="{{ url('lightspeed/discounts') }}" class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Discounts</span></a>
-                            </li> --}}
-                            <li class="kt-menu__item  kt-menu__item--submenu @yield('light_order_sub_active')"
-                                aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
-                                    href="{{ url('lightspeed/orders') }}" class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Orders</span></a>
-                            </li>
-                            <li class="kt-menu__item  kt-menu__item--submenu @yield('light_sub_active')"
-                                aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-                                <a href="javascript:" class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Settings</span><i
-                                        class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu ">
-                                    <span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item @yield('light_auth_sub_active')" aria-haspopup="true">
-                                            <a href="{{ url('lightspeed-auth/settings') }}" class="kt-menu__link "><i
-                                                    class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
-                                                    class="kt-menu__link-text">API tokens</span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="kt-menu__item kt-menu__item--submenu @yield('coper_active')" aria-haspopup="true"
-                    data-ktmenu-submenu-toggle="hover">
-                    <a href="javascript:" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><i
-                                class="flaticon-multimedia-2"></i></span><span
-                            class="kt-menu__link-text">Copernica</span><i
-                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                    <div class="kt-menu__submenu ">
-                        <span class="kt-menu__arrow"></span>
-                        <ul class="kt-menu__subnav">
+                @else
+                    <li class="kt-menu__item kt-menu__item--submenu @yield('light_active')" aria-haspopup="true"
+                        data-ktmenu-submenu-toggle="hover">
+                        <a href="javascript:" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><i
+                                    class="flaticon2-shopping-cart"></i></span><span
+                                class="kt-menu__link-text">Lightspeed</span><i
+                                class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                        <div class="kt-menu__submenu ">
+                            <span class="kt-menu__arrow"></span>
+                            <ul class="kt-menu__subnav">
+                                <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
+                                        class="kt-menu__link"><span class="kt-menu__link-text"></span></span></li>
+                                <li class="kt-menu__item kt-menu__item--submenu @yield('light_subs_sub_active')"
+                                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
+                                        href="{{ url('lightspeed/subscribers') }}"
+                                        class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Customers</span></a>
+                                </li>
+                                {{-- <li
+                                    class="kt-menu__item  kt-menu__item--submenu @yield('light_discount_sub_active')"
+                                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
+                                        href="{{ url('lightspeed/discounts') }}"
+                                        class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Discounts</span></a>
+                                </li> --}}
+                                <li class="kt-menu__item  kt-menu__item--submenu @yield('light_order_sub_active')"
+                                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
+                                        href="{{ url('lightspeed/orders') }}" class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Orders</span></a>
+                                </li>
+                                <li class="kt-menu__item  kt-menu__item--submenu @yield('light_sub_active')"
+                                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                    <a href="javascript:" class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Settings</span><i
+                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                    <div class="kt-menu__submenu ">
+                                        <span class="kt-menu__arrow"></span>
+                                        <ul class="kt-menu__subnav">
+                                            <li class="kt-menu__item @yield('light_auth_sub_active')"
+                                                aria-haspopup="true">
+                                                <a href="{{ url('lightspeed-auth/settings') }}"
+                                                    class="kt-menu__link "><i
+                                                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+                                                        class="kt-menu__link-text">API tokens</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="kt-menu__item kt-menu__item--submenu @yield('coper_active')" aria-haspopup="true"
+                        data-ktmenu-submenu-toggle="hover">
+                        <a href="javascript:" class="kt-menu__link kt-menu__toggle"><span class="kt-menu__link-icon"><i
+                                    class="flaticon-multimedia-2"></i></span><span
+                                class="kt-menu__link-text">Copernica</span><i
+                                class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                        <div class="kt-menu__submenu ">
+                            <span class="kt-menu__arrow"></span>
+                            <ul class="kt-menu__subnav">
 
-                            {{-- <li class="kt-menu__item  kt-menu__item--submenu"
-                                aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
-                                    href="{{ url('copernica/profile/create/subscriber') }}"
-                                    class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Sync Lightspeed subscribers</span></a>
-                            </li> --}}
-                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                                data-ktmenu-submenu-toggle="hover"><a href="{{ url('copernica/sync') }}"
-                                    class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Sync from Lightspeed</span></a>
-                            </li>
-                            <li class="kt-menu__item kt-menu__item--submenu @yield('coper_sub_active')"
-                                aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-                                <a href="javascript:" class="kt-menu__link kt-menu__toggle"><i
-                                        class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                        class="kt-menu__link-text">Settings</span><i
-                                        class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu ">
-                                    <span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item @yield('coper_auth_sub_active')" aria-haspopup="true">
-                                            <a href="{{ url('copernica-auth/settings') }}" class="kt-menu__link "><i
-                                                    class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
-                                                    class="kt-menu__link-text">API tokens</span></a>
-                                        </li>
-                                        {{-- <li
-                                            class="kt-menu__item @yield('coper_auth_sub_active')" aria-haspopup="true">
-                                            <a href="{{ url('copernica/setup') }}" class="kt-menu__link "><i
-                                                    class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
-                                                    class="kt-menu__link-text">Setup</span></a>
-                                        </li> --}}
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                                {{-- <li class="kt-menu__item  kt-menu__item--submenu"
+                                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
+                                        href="{{ url('copernica/profile/create/subscriber') }}"
+                                        class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Sync Lightspeed subscribers</span></a>
+                                </li> --}}
+                                <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
+                                    data-ktmenu-submenu-toggle="hover"><a href="{{ url('copernica/sync') }}"
+                                        class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Sync from Lightspeed</span></a>
+                                </li>
+                                <li class="kt-menu__item kt-menu__item--submenu @yield('coper_sub_active')"
+                                    aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                                    <a href="javascript:" class="kt-menu__link kt-menu__toggle"><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
+                                            class="kt-menu__link-text">Settings</span><i
+                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                    <div class="kt-menu__submenu ">
+                                        <span class="kt-menu__arrow"></span>
+                                        <ul class="kt-menu__subnav">
+                                            <li class="kt-menu__item @yield('coper_auth_sub_active')"
+                                                aria-haspopup="true">
+                                                <a href="{{ url('copernica-auth/settings') }}" class="kt-menu__link "><i
+                                                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+                                                        class="kt-menu__link-text">API tokens</span></a>
+                                            </li>
+                                            {{-- <li
+                                                class="kt-menu__item @yield('coper_auth_sub_active')"
+                                                aria-haspopup="true">
+                                                <a href="{{ url('copernica/setup') }}" class="kt-menu__link "><i
+                                                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+                                                        class="kt-menu__link-text">Setup</span></a>
+                                            </li> --}}
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

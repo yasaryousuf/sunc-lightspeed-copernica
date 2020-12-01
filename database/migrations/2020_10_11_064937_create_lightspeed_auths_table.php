@@ -18,7 +18,7 @@ class CreateLightspeedAuthsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('api_key', 190);
             $table->string('api_secret', 190);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

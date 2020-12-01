@@ -33,7 +33,7 @@
         type="text/css" />
     <link href="{{ asset('metronic/theme/default/demo1/dist/assets/css/skins/aside/dark.css') }}" rel="stylesheet"
         type="text/css" />
-    <link rel="shortcut icon" href="{{url('public/assets/images/logo-border.png')}}" />
+    <link rel="shortcut icon" href="{{ url('public/assets/images/logo-border.png') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .alert {
@@ -112,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.includes.flashMessage');
+                @include('admin.includes.flashMessage')
                 @yield('content')
 
                 <div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">

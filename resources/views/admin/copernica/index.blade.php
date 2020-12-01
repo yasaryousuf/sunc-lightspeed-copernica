@@ -43,37 +43,45 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Name</th>
                                 <th>Key</th>
                                 <th>Secret</th>
                                 <th>Token</th>
+                                <th>Created at</th>
+                                {{-- <th>Updated at</th> --}}
                                 <th>Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @if ($copernicaAuths)
+                            @if ($copernicaAuths->first())
                                 @foreach ($copernicaAuths as $copernicaAuth)
                                     <tr>
                                         <td>{{ $copernicaAuth->id }}</td>
-                                        <td>{{ $copernicaAuth->created_at }}</td>
-                                        <td>{{ $copernicaAuth->updted_at }}</td>
                                         <td>{{ $copernicaAuth->user->name }}</td>
                                         <td>{{ $copernicaAuth->api_key }}</td>
                                         <td>{{ $copernicaAuth->api_secret }}</td>
                                         <td>{{ $copernicaAuth->token }}</td>
+                                        <td>{{ $copernicaAuth->created_at }}</td>
+                                        {{-- <td>{{ $copernicaAuth->updted_at }}</td>
+                                        --}}
                                         <td>
                                             <span>
-                                                <a title="Edit" class="btn btn-sm btn-clean btn-icon btn-icon-md">
-                                                    <i class="la la-edit"></i></a>
-                                                <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                                {{-- <a title="Edit"
+                                                    class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                                    <i class="la la-edit"></i></a> --}}
+                                                <a title="Delete" onclick="return confirm('Are you sure?')"
+                                                    href="{{ url('/admin/manage/copernica/delete/' . $copernicaAuth->id) }}"
+                                                    class="btn btn-sm btn-clean btn-icon btn-icon-md">
                                                     <i class="la la-trash"></i> </a>
                                             </span>
                                         </td>
                                     </tr>
                                 @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="7">No data found</td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>

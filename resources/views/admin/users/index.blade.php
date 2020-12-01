@@ -42,33 +42,43 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
-                                <th>Email</th>
                                 <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Created at</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @if ($users)
+                            @if ($users->first())
                                 @foreach ($users as $user)
                                     <tr>
                                         <td>{{ $user->id }}</td>
-                                        <td>{{ $user->created_at }}</td>
-                                        <td>{{ $user->updted_at }}</td>
-                                        <td>{{ $user->email }}</td>
                                         <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td> <a href="{{ url('/admin/user/change-status/' . $user->id) }}"
+                                                onclick="return confirm('Are you sure?')"
+                                                class='btn btn-sm btn-{{ $user->active ? 'success' : 'danger' }}'>{{ $user->active ? 'Active' : 'Inactive' }}</a>
+                                        </td>
+                                        <td>{{ $user->created_at }}</td>
                                         <td>
                                             <span>
-                                                <a title="Edit" class="btn btn-sm btn-clean btn-icon btn-icon-md">
-                                                    <i class="la la-edit"></i></a>
-                                                <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                                {{-- <a title="Edit"
+                                                    class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                                    <i class="la la-edit"></i></a> --}}
+                                                <a title="Delete" onclick="return confirm('Are you sure?')"
+                                                    href="{{ url('/admin/user/delete/' . $user->id) }}"
+                                                    class="btn btn-sm btn-clean btn-icon btn-icon-md">
                                                     <i class="la la-trash"></i> </a>
                                             </span>
                                         </td>
                                     </tr>
                                 @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6">No data found</td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>

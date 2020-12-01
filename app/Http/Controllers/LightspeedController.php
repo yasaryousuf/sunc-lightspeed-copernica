@@ -38,8 +38,14 @@ class LightspeedController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        try {
+            $user = LightspeedAuth::find($id);
+            $user->delete();
+            return back()->withSuccess('Lightspeed token is deleted.');
+        }  catch (\Exception $e) {
+            return back()->withWarning($e->getMessage());
+        }
     }
 }

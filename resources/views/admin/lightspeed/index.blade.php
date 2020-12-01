@@ -42,35 +42,43 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Created at</th>
-                                <th>Updated at</th>
                                 <th>Name</th>
                                 <th>Key</th>
                                 <th>Secret</th>
+                                <th>Created at</th>
+                                {{-- <th>Updated at</th> --}}
                                 <th>Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @if ($lightspeedAuths)
+                            @if ($lightspeedAuths->first())
                                 @foreach ($lightspeedAuths as $lightspeedAuth)
                                     <tr>
                                         <td>{{ $lightspeedAuth->id }}</td>
-                                        <td>{{ $lightspeedAuth->created_at }}</td>
-                                        <td>{{ $lightspeedAuth->updted_at }}</td>
+                                        {{-- <td>{{ $lightspeedAuth->updted_at }}</td>
+                                        --}}
                                         <td>{{ $lightspeedAuth->user->name }}</td>
                                         <td>{{ $lightspeedAuth->api_key }}</td>
                                         <td>{{ $lightspeedAuth->api_secret }}</td>
+                                        <td>{{ $lightspeedAuth->created_at }}</td>
                                         <td>
                                             <span>
-                                                <a title="Edit" class="btn btn-sm btn-clean btn-icon btn-icon-md">
-                                                    <i class="la la-edit"></i></a>
-                                                <a title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                                {{-- <a title="Edit"
+                                                    class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                                    <i class="la la-edit"></i></a> --}}
+                                                <a title="Delete" onclick="return confirm('Are you sure?')"
+                                                    href="{{ url('/admin/manage/lightspeed/delete/' . $lightspeedAuth->id) }}"
+                                                    class="btn btn-sm btn-clean btn-icon btn-icon-md">
                                                     <i class="la la-trash"></i> </a>
                                             </span>
                                         </td>
                                     </tr>
                                 @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6">No data found</td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>

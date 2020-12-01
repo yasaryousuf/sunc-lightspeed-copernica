@@ -29,7 +29,7 @@ class CreateSubscribersTable extends Migration
             $table->string('nieuwsbrief')->default('Ja');
             $table->tinyInteger('isSaved')->nullable();
             $table->unsignedBigInteger('profile_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

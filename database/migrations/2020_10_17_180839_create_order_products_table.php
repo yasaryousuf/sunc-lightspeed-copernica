@@ -29,7 +29,7 @@ class CreateOrderProductsTable extends Migration
             $table->string('email')->nullable();
             $table->tinyInteger('isSaved')->nullable();
             $table->unsignedBigInteger('profile_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

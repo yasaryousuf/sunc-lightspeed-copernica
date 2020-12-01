@@ -19,7 +19,16 @@ class CopernicaController extends Controller
         $copernicaAuths = CopernicaAuth::all();
         return view('admin.copernica.index', ['copernicaAuths' => $copernicaAuths]);
     }
-
+    public function delete($id)
+    {
+        try {
+            $user = CopernicaAuth::find($id);
+            $user->delete();
+            return back()->withSuccess('Copernica token is deleted.');
+        }  catch (\Exception $e) {
+            return back()->withWarning($e->getMessage());
+        }
+    }
     public function setup()
     {
         return view('admin.copernica.setup');
@@ -1718,6 +1727,7 @@ class CopernicaController extends Controller
         try {
             $subscribers = (new \App\Custom\Lightspeed\Subscriber)->get();
             $orders = (new \App\Custom\Lightspeed\Order)->get();
+            $checkouts = (new \App\Custom\Lightspeed\Checkout)->get();
         } catch (\Exception $e) {
             return redirect('/copernica/sync')->withWarning($e->getMessage());
         }
@@ -1747,6 +1757,68 @@ class CopernicaController extends Controller
                 );
             } catch (\Exception $e) {
                 return redirect('/copernica/sync')->withWarning($e->getMessage());
+            }
+        }
+
+        
+        foreach ($checkouts as $checkout) {
+            if(!empty($checkout['payment_method'])) {
+                continue;
+            }
+            try {
+                $createdAt = $checkout['created_at'] ? new \DateTime($checkout['created_at']) : null;
+                $updatedAt = $checkout['updated_at'] ? new \DateTime($checkout['updated_at']) : null;
+                $customer = $checkout['customer'];
+                $billing_address = $checkout['billing_address'];
+                $shipping_address = $checkout['shipping_address'];
+                $birthDate = $customer['birthdate'] ? new \DateTime($customer['birthdate']) : null;
+                
+
+                $orderPerson = \App\Models\Checkout::updateOrCreate(
+                    [                        
+                        'checkoutId' => $checkout['id'],
+                    ],
+                    [
+                        'user_id' => Auth::user()->id,
+                        'checkoutId' => $checkout['id'],
+                        'nationalId' => $customer['national_id'],
+                        'email' => $customer['email'],
+                        'gender' => $customer['gender'],
+                        'firstName' => $customer['firstname'],
+                        'lastName' => $customer['lastname'],
+                        'phone' => $customer['phone'],
+                        'mobile' => $customer['mobile'],
+                        'birthDate' => $birthDate ? $birthDate->format('Y-m-d H:i:s') : null,
+                        'company' => $customer['company'],
+                        'coCNumber' => $customer['cocnumber'],
+                        'vatNumber' => $customer['vatnumber'],
+                        'addressBillingName' => $billing_address['name'],
+                        'addressBillingStreet' => $billing_address['address1'],
+                        'addressBillingStreet2' => $billing_address['address2'],
+                        'addressBillingNumber' => $billing_address['number'],
+                        'addressBillingExtension' => $billing_address['extension'],
+                        'addressBillingZipcode' => $billing_address['zipcode'],
+                        'addressBillingCity' => $billing_address['city'],
+                        'addressBillingRegion' => $billing_address['region'],
+                        'addressBillingCountryCode' => $billing_address['country'],
+                        'addressShippingName' => $shipping_address['name'],
+                        'addressShippingStreet' => $shipping_address['address1'],
+                        'addressShippingStreet2' => $shipping_address['address2'],
+                        'addressShippingNumber' => $shipping_address['number'],
+                        'addressShippingExtension' => $shipping_address['extension'],
+                        'addressShippingZipcode' => $shipping_address['zipcode'],
+                        'addressShippingCity' => $shipping_address['city'],
+                        'addressShippingRegion' => $shipping_address['region'],
+                        'addressShippingCountryCode' => $shipping_address['country'],
+                        'createdAt' => $createdAt ? $createdAt->format('Y-m-d H:i:s') : null,
+                        'updatedAt' => $updatedAt ? $updatedAt->format('Y-m-d H:i:s') : null,
+                        'customerType' => $customer['type'],
+                        'optInNewsletter' => $checkout['newsletter'] ? true : false,
+                        'nieuwsbrief' => $checkout['newsletter'] ? 'Ja' : 'Nee',
+                    ]
+                );
+            } catch (\Exception $e) {
+                return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
             }
         }
 
@@ -1864,6 +1936,7 @@ class CopernicaController extends Controller
 
             $orderPersonEmails = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->pluck('email');
             $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
+           
             if($subscribers->first()) {
                 foreach ($subscribers as $subscriber) {
                     $profileData = $subscriber->toArray();
@@ -1895,6 +1968,7 @@ class CopernicaController extends Controller
             $databases = (new Copernica)->getAllDatabases();
 
             $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
+            $checkoutDbId = (new Copernica)->getDatabaseId($databases['data'], Copernica::CHECKOUT_DATABASE_NAME);
             $collections = (new Copernica)->getAllCollections($id);
             $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
             $productCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_ROW_COLLECTION_NAME);
@@ -1902,10 +1976,41 @@ class CopernicaController extends Controller
             $profile = new Profile();
 
             $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
-            
+            $checkouts = \App\Models\Checkout::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'checkoutId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'birthDate', 'company', 'coCNumber', 'vatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'createdAt', 'updatedAt', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+        
         } catch (\Exception $e) {
             return redirect('/copernica/sync')->withWarning($e->getMessage());
         }
+
+        if ($checkouts->first()) {
+
+            foreach ($checkouts as $checkout) {
+                try {
+                    $checkoutData = $checkout->toArray();
+                    $checkoutId = $checkoutData['checkoutId'];
+                    unset($checkoutData['id']);
+                    unset($checkoutData['checkoutId']);
+                    unset($checkoutData['profile_id']);
+                    if (!empty($checkout->profile_id)) {
+                        $parameters = array(
+                            'fields'    =>  array("checkoutId=={$checkout->checkoutId}"),
+                            'async'     =>  1,
+                            'create'    =>  0
+                        );
+                        $profile->update($checkoutData, $checkoutDbId, $parameters);
+                        $profileID = $checkout->profile_id;
+                    } else {
+                        $profileID = $profile->create($checkoutData, $checkoutDbId, true);
+                        $checkout->isSaved = true;
+                        $checkout->profile_id = $profileID;
+                        $checkout->save();
+                    }
+                } catch (\Exception $e) {
+                    return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
+                }
+            }
+        }
+
         if ($subscribers->first()) {
 
             foreach ($subscribers as $subscriber) {

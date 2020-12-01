@@ -45,10 +45,14 @@ class AuthController extends Controller
  
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            if(!Auth::user()->active) {
+                Auth::logout();
+                return Redirect::to("login")->withDanger('Your account is deactivated. Please contact an admin.');
+            }
             return redirect()->intended('dashboard');
         }
 
-        return Redirect::to("login")->withSuccess('Opps! You have entered invalid credentials');
+        return Redirect::to("login")->withDanger('Opps! You have entered invalid credentials');
     }
 
     public function postRegistration(Request $request)
@@ -76,7 +80,7 @@ class AuthController extends Controller
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
 
-        if (empty($lightspeedAuth) || empty($lightspeedAuth->api_key) || empty($copernicaAuth) || empty($copernicaAuth->token)) {
+        if ((empty($lightspeedAuth) || empty($lightspeedAuth->api_key) || empty($copernicaAuth) || empty($copernicaAuth->token)) && !Auth::user()->is_admin) {
             return redirect('/wizard');
         }
         return view('admin.dashboard');

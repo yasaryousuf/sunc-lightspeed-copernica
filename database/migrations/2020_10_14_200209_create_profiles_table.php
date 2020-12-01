@@ -23,7 +23,7 @@ class CreateProfilesTable extends Migration
             $table->string('gender')->nullable();
             $table->date('dob')->nullable();
             $table->string('category_name')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

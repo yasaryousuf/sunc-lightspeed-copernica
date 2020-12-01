@@ -33,8 +33,12 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('admin/manage/users', [UserController::class, 'index']);
+    Route::get('admin/user/delete/{id}', [UserController::class, 'delete']);
+    Route::get('admin/user/change-status/{id}', [UserController::class, 'changeStatus']);
     Route::get('admin/manage/lightspeed', [LightspeedController::class, 'index']);
     Route::get('admin/manage/copernica', [CopernicaController::class, 'index']);
+    Route::get('admin/manage/lightspeed/delete/{id}', [LightspeedController::class, 'delete']);
+    Route::get('admin/manage/copernica/delete/{id}', [CopernicaController::class, 'delete']);
 
     Route::get('copernica', [AuthController::class, 'copernica']);
     Route::get('lightspeed', [AuthController::class, 'copernica']);
@@ -78,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('copernica/collection/fields/create/product', [CopernicaController::class, 'productCollectionFieldsCreate']);
 
     Route::get('copernica/profile/create', [CopernicaController::class, 'profileCreate']);
+    /* 8888888888888888888888888888 */
     Route::get('copernica/profile/create/subscriber', [CopernicaController::class, 'profileCreateFromSubscriber']);
     Route::get('copernica/profile/create/discount', [CopernicaController::class, 'profileCreateFromDiscount']);
     Route::get('copernica/profile/create/order', [CopernicaController::class, 'profileCreateFromOrder']);

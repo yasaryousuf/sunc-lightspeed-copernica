@@ -16,6 +16,25 @@ class UserController extends Controller
         return view('admin.users.index', ['users' => $users]);
     }
 
+    public function delete($id)
+    {
+        try {
+            $user = User::find($id);
+            $user->delete();
+            return back()->withSuccess('User is deleted.');
+        }  catch (\Exception $e) {
+            return back()->withWarning($e->getMessage());
+        }
+    }
+
+    public function changeStatus($id)
+    {
+        $user = User::find($id);
+        $user->active = !($user->active);
+        $user->save();
+        return back()->withSuccess('User status is changed.');
+    }
+
     public function wizard()
     {
         $lightspeedAuth = LightspeedAuth::where('user_id', \Auth::user()->id)->first();

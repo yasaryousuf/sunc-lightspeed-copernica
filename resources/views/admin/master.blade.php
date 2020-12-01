@@ -33,7 +33,9 @@
         type="text/css" />
     <link href="{{ asset('metronic/theme/default/demo1/dist/assets/css/skins/aside/dark.css') }}" rel="stylesheet"
         type="text/css" />
-    <link rel="shortcut icon" href="{{url('public/assets/images/logo-border.png')}}" />
+    <link href="{{ asset('metronic/theme/default/demo1/dist/assets/css/style.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link rel="shortcut icon" href="{{ url('public/assets/images/logo-border.png') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .alert {
@@ -49,8 +51,8 @@
     class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
     <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
         <div class="kt-header-mobile__logo">
-            <a href="{{url('/')}}">
-                <img src="{{url('public/assets/images/logo.png')}}">
+            <a href="{{ url('/') }}">
+                <img src="{{ url('public/assets/images/logo.png') }}">
             </a>
         </div>
         <div class="kt-header-mobile__toolbar">
@@ -91,7 +93,7 @@
                             <div
                                 class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-xl">
                                 <div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x"
-                                    style="background: url({{url('public/assets/images/BG.jpg')}}); background-repeat: no-repeat;background-size: cover;">
+                                    style="background: url({{ url('public/assets/images/BG.jpg') }}); background-repeat: no-repeat;background-size: cover;">
                                     <div class="kt-user-card__avatar">
                                         <img class="kt-hidden" alt="Pic"
                                             src="{{ asset('metronic/theme/default/demo1/dist/assets/media/users/300_25.jpg') }}" />
@@ -112,7 +114,7 @@
                         </div>
                     </div>
                 </div>
-                @include('admin.includes.flashMessage');
+                @include('admin.includes.flashMessage')
                 @yield('content')
 
                 <div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">

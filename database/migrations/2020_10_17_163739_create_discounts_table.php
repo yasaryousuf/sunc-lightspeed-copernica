@@ -32,7 +32,7 @@ class CreateDiscountsTable extends Migration
             $table->tinyInteger('before_tax')->nullable();
             $table->tinyInteger('minimum_after')->nullable();
             $table->string('code')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
