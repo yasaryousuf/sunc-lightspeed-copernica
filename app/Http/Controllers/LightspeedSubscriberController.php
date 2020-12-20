@@ -52,8 +52,8 @@ class LightspeedSubscriberController extends Controller
     }
 
     public function importapi() {
-        set_time_limit(120);
-        $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
+        set_time_limit(180);
+        $lightspeedAuth = LightspeedAuth::first();
         if (empty($lightspeedAuth)) {
             return response()->json( ['success'=>false, 'message' =>"Please set API key and secret in settings"], 401 );
         }
@@ -265,7 +265,11 @@ class LightspeedSubscriberController extends Controller
             }
         }
 
-
+        try {
+            (new CopernicaController)->profileCreate();
+        } catch (\Exception $e) {
+            return response()->json( ['success'=>false, 'message' =>$e->getMessage()], 401 );
+        }
         return response()->json( ['success'=>true, 'message' =>"Subscribers imported."], 200 );
     }
 

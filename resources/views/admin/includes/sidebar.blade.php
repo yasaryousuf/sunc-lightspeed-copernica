@@ -45,10 +45,10 @@
                                 </li>
                                 <li class="kt-menu__item  kt-menu__item--submenu @yield('admin_lights_sub_active')"
                                     aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
-                                        href="{{ url('admin/manage/lightspeed') }}"
+                                        href="{{ url('/lightspeed-auth/settings') }}"
                                         class="kt-menu__link kt-menu__toggle"><i
                                             class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
-                                            class="kt-menu__link-text">Lightspeed APIs</span></a>
+                                            class="kt-menu__link-text">Set Lightspeed API</span></a>
                                 </li>
                                 <li class="kt-menu__item  kt-menu__item--submenu @yield('admin_copers_sub_active')"
                                     aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a
@@ -94,7 +94,7 @@
                                             class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
                                             class="kt-menu__link-text">Orders</span></a>
                                 </li>
-                                <li class="kt-menu__item  kt-menu__item--submenu @yield('light_sub_active')"
+<!--                                 <li class="kt-menu__item  kt-menu__item--submenu @yield('light_sub_active')"
                                     aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
                                     <a href="javascript:" class="kt-menu__link kt-menu__toggle"><i
                                             class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span
@@ -112,7 +112,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                     </li>

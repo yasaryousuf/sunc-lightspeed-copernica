@@ -1172,19 +1172,23 @@ class CopernicaController extends Controller
     }
 
     function profileCreate () {
-        set_time_limit(120);
+        set_time_limit(180);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
         if (empty($copernicaAuth) || empty($copernicaAuth->token)) {
             return response()->json( ['success'=>false, 'message' =>"Copernica token not found"], 401 );
         }
         $profile = new Profile();
+        $databases = (new Copernica)->getAllDatabases();
 
+        $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
         $orderPersonEmails = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->pluck('email');
+        $subscribersEmails = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->pluck('email');
         $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
         if($subscribers->first()) {
             foreach ($subscribers as $subscriber) {
                 try {
                     $profileData = $subscriber->toArray();
+                    $profileData['abandonedCart'] = 'false';
                     unset($profileData['id']);
                     unset($profileData['profile_id']);
                     if (in_array($subscriber->email, $orderPersonEmails->toArray())) {
@@ -1199,10 +1203,10 @@ class CopernicaController extends Controller
                             'async'     =>  1,
                             'create'    =>  0
                         );
-                        $profile->update($profileData, Copernica::USER_DATABASE_NAME, $parameters);
+                        $profile->update($profileData, $id, $parameters);
                         $profileID = $subscriber->profile_id;
                     } else {
-                        $profileID = $profile->create($profileData, Copernica::USER_DATABASE_NAME, true);
+                        $profileID = $profile->create($profileData, $id, true);
                         $subscriber->isSaved = true;
                         $subscriber->profile_id = $profileID;
                         $subscriber->save();
@@ -1213,9 +1217,7 @@ class CopernicaController extends Controller
             }
         }
 
-        $databases = (new Copernica)->getAllDatabases();
 
-        $id = (new Copernica)->getDatabaseId($databases['data'], Copernica::USER_DATABASE_NAME);
         $checkoutDbId = (new Copernica)->getDatabaseId($databases['data'], Copernica::CHECKOUT_DATABASE_NAME);
         $collections = (new Copernica)->getAllCollections($id);
         $orderCollectionID = (new Copernica)->getcollectionId($collections['data'], Copernica::ORDER_COLLECTION_NAME);
@@ -1224,13 +1226,14 @@ class CopernicaController extends Controller
         $profile = new Profile();
 
         $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
-        $checkouts = \App\Models\Checkout::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'checkoutId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'birthDate', 'company', 'coCNumber', 'vatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'createdAt', 'updatedAt', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+        $checkouts = \App\Models\Checkout::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'checkoutId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'birthDate', 'company', 'coCNumber', 'vatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'createdAt', 'updatedAt', 'customerType', 'optInNewsletter', 'nieuwsbrief')->whereNotIn('email', $orderPersonEmails)->whereNotIn('email', $subscribersEmails)->get();
         
         if ($checkouts->first()) {
 
             foreach ($checkouts as $checkout) {
                 try {
                     $checkoutData = $checkout->toArray();
+                    $checkoutData['abandonedCart'] = 'true';
                     $checkoutId = $checkoutData['checkoutId'];
                     unset($checkoutData['id']);
                     unset($checkoutData['checkoutId']);
@@ -1241,10 +1244,10 @@ class CopernicaController extends Controller
                             'async'     =>  1,
                             'create'    =>  0
                         );
-                        $profile->update($checkoutData, $checkoutDbId, $parameters);
+                        $profile->update($checkoutData, $id, $parameters);
                         $profileID = $checkout->profile_id;
                     } else {
-                        $profileID = $profile->create($checkoutData, $checkoutDbId, true);
+                        $profileID = $profile->create($checkoutData, $id, true);
                         $checkout->isSaved = true;
                         $checkout->profile_id = $profileID;
                         $checkout->save();
@@ -1260,6 +1263,7 @@ class CopernicaController extends Controller
             foreach ($subscribers as $subscriber) {
                 try {
                     $subscriberData = $subscriber->toArray();
+                    $subscriberData['abandonedCart'] = 'false';
                     $customerId = $subscriberData['customerId'];
                     unset($subscriberData['id']);
                     unset($subscriberData['customerId']);
@@ -1397,102 +1401,102 @@ class CopernicaController extends Controller
                     'name' => 'companyName',
                     'type' => 'text'
                 ],
-                [
-                    'name' => 'companyCoCNumber',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'companyVatNumber',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingName',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingStreet',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingStreet2',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingNumber',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingExtension',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingZipcode',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingCity',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingRegion',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingCountryCode',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressBillingCountryTitle',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingName',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingStreet',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingStreet2',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingNumber',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingExtension',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingZipcode',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingCity',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingRegion',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingCountryCode',
-                    'type' => 'text'
-                ],
-                [
-                    'name' => 'addressShippingCountryTitle',
-                    'type' => 'text'
-                ],
+                // [
+                //     'name' => 'companyCoCNumber',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'companyVatNumber',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingName',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingStreet',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingStreet2',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingNumber',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingExtension',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingZipcode',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingCity',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingRegion',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingCountryCode',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressBillingCountryTitle',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingName',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingStreet',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingStreet2',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingNumber',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingExtension',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingZipcode',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingCity',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingRegion',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingCountryCode',
+                //     'type' => 'text'
+                // ],
+                // [
+                //     'name' => 'addressShippingCountryTitle',
+                //     'type' => 'text'
+                // ],
                 [
                     'name' => 'languageCode',
                     'type' => 'text'
                 ],
-                [
-                    'name' => 'languageTitle',
-                    'type' => 'text'
-                ],
+                // [
+                //     'name' => 'languageTitle',
+                //     'type' => 'text'
+                // ],
                 [
                     'name' => 'isConfirmedCustomer',
                     'type' => 'integer',
@@ -1518,13 +1522,18 @@ class CopernicaController extends Controller
                     'displayed' => true
                 ],
                 [
+                    'name' => 'abandonedCart',
+                    'type' => 'text',
+                    'displayed' => true
+                ],
+                [
                     'name' => 'customerUpdatedAt',
                     'type' => 'empty_datetime'
                 ],
-                [
-                    'name' => 'lastOnlineAt',
-                    'type' => 'empty_datetime'
-                ],
+                // [
+                //     'name' => 'lastOnlineAt',
+                //     'type' => 'empty_datetime'
+                // ],
                 [
                     'name' => 'languageLocale',
                     'type' => 'text'
@@ -1717,9 +1726,9 @@ class CopernicaController extends Controller
     }
 
     function profileCreateFromSubscriber () {
-        set_time_limit(120);
+        set_time_limit(180);
         $copernicaAuth = CopernicaAuth::where("user_id", Auth::user()->id)->first();
-        $lightspeedAuth = LightspeedAuth::where("user_id", Auth::user()->id)->first();
+        $lightspeedAuth = LightspeedAuth::first();
 
         if (empty($lightspeedAuth) || empty($lightspeedAuth->api_key) || empty($copernicaAuth) || empty($copernicaAuth->token)) {
             return redirect('/wizard')->withWarning("Token not found");
@@ -1935,6 +1944,7 @@ class CopernicaController extends Controller
             $profile = new Profile();
 
             $orderPersonEmails = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->pluck('email');
+            $subscribersEmails = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->pluck('email');
             $subscribers = \App\Models\Subscriber::where('user_id', \Auth::user()->id)->select('id','profile_id','firstname','lastname','email', 'createdAt', 'updatedAt', 'isConfirmedCustomer', 'languageCode', 'languageTitle', 'optInNewsletter', 'nieuwsbrief')->get();
            
             if($subscribers->first()) {
@@ -1976,7 +1986,7 @@ class CopernicaController extends Controller
             $profile = new Profile();
 
             $subscribers = \App\Models\OrderPerson::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'customerId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'remoteIp', 'birthDate', 'isCompany', 'companyName', 'companyCoCNumber', 'companyVatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressBillingCountryTitle', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'addressShippingCountryTitle', 'languageCode', 'languageTitle', 'isConfirmedCustomer', 'customerCreatedAt', 'customerUpdatedAt', 'lastOnlineAt', 'languageLocale', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
-            $checkouts = \App\Models\Checkout::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'checkoutId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'birthDate', 'company', 'coCNumber', 'vatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'createdAt', 'updatedAt', 'customerType', 'optInNewsletter', 'nieuwsbrief')->get();
+            $checkouts = \App\Models\Checkout::where('user_id', \Auth::user()->id)->select('id', 'profile_id', 'checkoutId', 'nationalId', 'email', 'gender', 'firstName', 'lastName', 'phone', 'mobile', 'birthDate', 'company', 'coCNumber', 'vatNumber', 'addressBillingName', 'addressBillingStreet', 'addressBillingStreet2', 'addressBillingNumber', 'addressBillingExtension', 'addressBillingZipcode', 'addressBillingCity', 'addressBillingRegion', 'addressBillingCountryCode', 'addressShippingName', 'addressShippingStreet', 'addressShippingStreet2', 'addressShippingNumber', 'addressShippingExtension', 'addressShippingZipcode', 'addressShippingCity', 'addressShippingRegion', 'addressShippingCountryCode', 'createdAt', 'updatedAt', 'customerType', 'optInNewsletter', 'nieuwsbrief')->whereNotIn('email', $orderPersonEmails)->whereNotIn('email', $subscribersEmails)->get();
         
         } catch (\Exception $e) {
             return redirect('/copernica/sync')->withWarning($e->getMessage());
@@ -1997,10 +2007,10 @@ class CopernicaController extends Controller
                             'async'     =>  1,
                             'create'    =>  0
                         );
-                        $profile->update($checkoutData, $checkoutDbId, $parameters);
+                        $profile->update($checkoutData, $id, $parameters);
                         $profileID = $checkout->profile_id;
                     } else {
-                        $profileID = $profile->create($checkoutData, $checkoutDbId, true);
+                        $profileID = $profile->create($checkoutData, $id, true);
                         $checkout->isSaved = true;
                         $checkout->profile_id = $profileID;
                         $checkout->save();

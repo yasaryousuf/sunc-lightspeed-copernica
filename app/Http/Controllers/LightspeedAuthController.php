@@ -11,7 +11,7 @@ class LightspeedAuthController extends Controller
 
     public function edit()
     {
-        $lightspeedAuth = LightspeedAuth::where('user_id', \Auth::user()->id)->first();
+        $lightspeedAuth = LightspeedAuth::first();
         return view('admin.lightspeedAuth.edit', compact('lightspeedAuth'));
     }
 

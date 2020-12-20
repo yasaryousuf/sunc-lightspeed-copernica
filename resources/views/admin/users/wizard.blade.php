@@ -29,22 +29,22 @@
                             <div class="kt-wizard-v3__nav">
                                 <!--doc: Remove "kt-wizard-v3__nav-items--clickable" class and also set 'clickableSteps: false' in the JS init to disable manually clicking step titles -->
                                 <div class="kt-wizard-v3__nav-items kt-wizard-v3__nav-items--clickable">
-                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+<!--                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="current">
                                         <div class="kt-wizard-v3__nav-body">
                                             <div class="kt-wizard-v3__nav-label"> <span>1</span> Lightspeed Details
                                             </div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>2</span> Copernica Details</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>1</span> Copernica Details</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
-                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+<!--                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
                                             <div class="kt-wizard-v3__nav-label"> <span>3</span> User database</div>
@@ -57,39 +57,39 @@
                                             <div class="kt-wizard-v3__nav-label"> <span>4</span> Checkout database</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>5</span> Order Collection</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>2</span> Order Collection</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>6</span> Row Collection</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>3</span> Row Collection</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
-                                    <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
+<!--                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
                                             <div class="kt-wizard-v3__nav-label"> <span>7</span> Collect data</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>8</span> Sync data</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>4</span> Sync data</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
                                     <div class="kt-wizard-v3__nav-item" data-ktwizard-type="step"
                                         data-ktwizard-state="pending">
                                         <div class="kt-wizard-v3__nav-body">
-                                            <div class="kt-wizard-v3__nav-label"> <span>9</span> Final</div>
+                                            <div class="kt-wizard-v3__nav-label"> <span>5</span> Final</div>
                                             <div class="kt-wizard-v3__nav-bar"></div>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                             <form class="kt-form" id="kt_form" novalidate="novalidate" method="post"
                                 action={{ url('wizard') }}>
                                 @csrf
-                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
+<!--                                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content"
                                     data-ktwizard-state="current">
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
@@ -178,7 +178,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+<!--                                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
                                             <div class="form-group row">
@@ -195,7 +195,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
@@ -214,7 +214,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+<!--                                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
                                             <div class="form-group row">
@@ -222,7 +222,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                                     <div class="kt-form__section kt-form__section--first">
                                         <div class="kt-wizard-v3__form">
@@ -276,41 +276,42 @@
                     clickableSteps: false, // Allow step clicking
                 })
                 .on('change', function(e) {
-                    $('.progress .progress-bar').css("width", `${(e.currentStep-1)*12.5}%`).text(
-                        `${(e.currentStep-1)*12.5}%`);
+                    $('.progress .progress-bar').css("width", `${(e.currentStep-1)*25}%`).text(
+                        `${(e.currentStep-1)*25}%`);
                 })
                 .on("beforeNext", function(e) {
                     $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
                         .prop("disabled", true).addClass('spinner').addClass('spinner-right');
+                    // if (e.currentStep == 1) {
+                    //     $('.progress .progress-bar').css("width", "12.5%").text("12.5%");
+                    //     $.ajax({
+                    //         type: "POST",
+                    //         url: "{{ url('/lightspeed-auth-api/settings') }}",
+                    //         data: {
+                    //             _token: '{{ csrf_token() }}',
+                    //             api_key: $('[name="lightspeed[api_key]"]').val(),
+                    //             api_secret: $('[name="lightspeed[api_secret]"]').val(),
+                    //         },
+                    //         success: function(data) {
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //         },
+                    //         error: function(data) {
+                    //             swal.fire({
+                    //                 title: "",
+                    //                 text: "There are some errors in your submission. Please correct them.",
+                    //                 type: "error",
+                    //                 confirmButtonClass: "btn btn-secondary",
+                    //             });
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //             wizard.goTo(1);
+                    //         },
+                    //     });
+                    // } else 
                     if (e.currentStep == 1) {
-                        $('.progress .progress-bar').css("width", "12.5%").text("12.5%");
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ url('/lightspeed-auth-api/settings') }}",
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                api_key: $('[name="lightspeed[api_key]"]').val(),
-                                api_secret: $('[name="lightspeed[api_secret]"]').val(),
-                            },
-                            success: function(data) {
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                            },
-                            error: function(data) {
-                                swal.fire({
-                                    title: "",
-                                    text: "There are some errors in your submission. Please correct them.",
-                                    type: "error",
-                                    confirmButtonClass: "btn btn-secondary",
-                                });
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                                wizard.goTo(1);
-                            },
-                        });
-                    } else if (e.currentStep == 2) {
                         $('.progress .progress-bar').css("width", "25%").text("25%");
                         $.ajax({
                             type: "POST",
@@ -339,61 +340,64 @@
                                 wizard.goTo(2);
                             },
                         });
-                    } else if (e.currentStep == 3) {
-                        $('.progress .progress-bar').css("width", "37.5%").text("37.5%");
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ url('copernica/database/create/user-api') }}",
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(data) {
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                            },
-                            error: function(data) {
-                                swal.fire({
-                                    title: "",
-                                    text: data.responseJSON.message,
-                                    type: "error",
-                                    confirmButtonClass: "btn btn-secondary",
-                                });
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
+                    } 
+                    // else if (e.currentStep == 3) {
+                    //     $('.progress .progress-bar').css("width", "37.5%").text("37.5%");
+                    //     $.ajax({
+                    //         type: "GET",
+                    //         url: "{{ url('copernica/database/create/user-api') }}",
+                    //         data: {
+                    //             _token: '{{ csrf_token() }}'
+                    //         },
+                    //         success: function(data) {
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //         },
+                    //         error: function(data) {
+                    //             swal.fire({
+                    //                 title: "",
+                    //                 text: data.responseJSON.message,
+                    //                 type: "error",
+                    //                 confirmButtonClass: "btn btn-secondary",
+                    //             });
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
 
-                                // wizard.goTo(3);
-                            },
-                        });
-                    } else if (e.currentStep == 4) {
+                    //             // wizard.goTo(3);
+                    //         },
+                    //     });
+                    // } 
+                    // else if (e.currentStep == 4) {
+                    //     $('.progress .progress-bar').css("width", "50%").text("50%");
+                    //     $.ajax({
+                    //         type: "GET",
+                    //         url: "{{ url('copernica/database/create/checkout-api') }}",
+                    //         data: {
+                    //             _token: '{{ csrf_token() }}',
+                    //         },
+                    //         success: function(data) {
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //         },
+                    //         error: function(data) {
+                    //             swal.fire({
+                    //                 title: "",
+                    //                 text: data.responseJSON.message,
+                    //                 type: "error",
+                    //                 confirmButtonClass: "btn btn-secondary",
+                    //             });
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //             // wizard.goTo(4);
+                    //         },
+                    //     });
+                    // } 
+                    else if (e.currentStep == 2) {
                         $('.progress .progress-bar').css("width", "50%").text("50%");
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ url('copernica/database/create/checkout-api') }}",
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                            },
-                            success: function(data) {
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                            },
-                            error: function(data) {
-                                swal.fire({
-                                    title: "",
-                                    text: data.responseJSON.message,
-                                    type: "error",
-                                    confirmButtonClass: "btn btn-secondary",
-                                });
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                                // wizard.goTo(4);
-                            },
-                        });
-                    } else if (e.currentStep == 5) {
-                        $('.progress .progress-bar').css("width", "62.5%").text("62.5%");
                         $.ajax({
                             type: "GET",
                             url: "{{ url('copernica/collection/create/order-api') }}",
@@ -420,7 +424,7 @@
                                 // wizard.goTo(5);
                             },
                         });
-                    } else if (e.currentStep == 6) {
+                    } else if (e.currentStep == 3) {
                         $('.progress .progress-bar').css("width", "75%").text("75%");
                         $.ajax({
                             type: "GET",
@@ -448,8 +452,8 @@
                                 // wizard.goTo(6);
                             },
                         });
-                    } else if (e.currentStep == 7) {
-                        $('.progress .progress-bar').css("width", "87.5%").text("87.5%");
+                    } else if (e.currentStep == 4) {
+                        $('.progress .progress-bar').css("width", "100%").text("100%");
                         $.ajax({
                             type: "GET",
                             url: "{{ url('lightspeed/import') }}",
@@ -476,35 +480,36 @@
                                 // wizard.goTo(6);
                             },
                         });
-                    } else if (e.currentStep == 8) {
-                        $('.progress .progress-bar').css("width", "100%").text("100%");
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ url('copernica/profile/create') }}",
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                            },
-                            success: function(data) {
-                                //goNext();
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                            },
-                            error: function(data) {
-                                console.log(data)
-                                swal.fire({
-                                    title: "",
-                                    text: data.responseJSON.message,
-                                    type: "error",
-                                    confirmButtonClass: "btn btn-secondary",
-                                });
-                                $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
-                                    .prop("disabled", false)
-                                    .removeClass('spinner').removeClass('spinner-right');
-                                // wizard.goTo(6);
-                            },
-                        });
-                    }
+                    } 
+                    // else if (e.currentStep == 8) {
+                    //     $('.progress .progress-bar').css("width", "100%").text("100%");
+                    //     $.ajax({
+                    //         type: "GET",
+                    //         url: "{{ url('copernica/profile/create') }}",
+                    //         data: {
+                    //             _token: '{{ csrf_token() }}',
+                    //         },
+                    //         success: function(data) {
+                    //             //goNext();
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //         },
+                    //         error: function(data) {
+                    //             console.log(data)
+                    //             swal.fire({
+                    //                 title: "",
+                    //                 text: data.responseJSON.message,
+                    //                 type: "error",
+                    //                 confirmButtonClass: "btn btn-secondary",
+                    //             });
+                    //             $("[data-ktwizard-type='action-next'], [data-ktwizard-type='action-prev'], [data-ktwizard-type='action-submit']")
+                    //                 .prop("disabled", false)
+                    //                 .removeClass('spinner').removeClass('spinner-right');
+                    //             // wizard.goTo(6);
+                    //         },
+                    //     });
+                    // }
                 });
         });
 
@@ -514,8 +519,8 @@
 @section('style')
     <style>
         .kt-wizard-v3 .kt-wizard-v3__nav .kt-wizard-v3__nav-items .kt-wizard-v3__nav-item {
-            -ms-flex: 0 0 11.5%;
-            flex: 0 0 11.5%;
+            -ms-flex: 0 0 20.5%;
+            flex: 0 0 20.5%;
         }
 
         .spinner.spinner-right.btn:not(.btn-block) {
